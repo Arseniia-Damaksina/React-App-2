@@ -4,7 +4,7 @@ import { TaskInterface, TaskList } from "../types/types";
 import { CalendarDaysIcon } from "@heroicons/react/24/outline";
 import { getPriorityColor } from "../utils/utilFunctions";
 // @ts-ignore
-import TaskMenu from "./TaskMenu";
+import TaskMenu from "./menus/TaskMenu";
 import EditTaskForm from "./forms/EditTaskForm";
 import { updateTaskAsync, fetchTasksAsync } from "../slices/taskSlice";
 import Modal from "./ui/Modal";

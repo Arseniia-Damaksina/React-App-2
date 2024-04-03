@@ -15,6 +15,8 @@ export interface TaskInterface {
   priority: string;
   taskListId: number;
   taskListTitle: string;
+  taskBoardId: number;
+  taskBoard: string;
 }
 
 export interface addTask {
@@ -35,6 +37,7 @@ export interface TasksState {
 export interface TaskList {
   id: number;
   title: string;
+  taskBoardId: number;
 }
 
 export interface TaskListsState {
@@ -43,8 +46,13 @@ export interface TaskListsState {
   error: string | null;
 }
 
-export interface TasksState {
-  tasks: TaskInterface[];
+export interface TaskBoard {
+  id: number;
+  board: string;
+}
+
+export interface TaskBoardsState {
+  taskBoards: TaskBoard[];
   status: "loading" | "succeeded" | "failed" | "";
   error: string | null;
 }
@@ -75,4 +83,5 @@ export interface ModalProps {
 
 export interface onClickButtonProps {
   onClick: React.MouseEventHandler<HTMLButtonElement>
+  text?: string
 }

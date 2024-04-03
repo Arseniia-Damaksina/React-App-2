@@ -10,8 +10,8 @@ import {
   PlusIcon,
   TrashIcon,
 } from "@heroicons/react/24/outline";
-import { useAppDispatch } from "../store/store";
-import { deleteTaskListAsync } from "../slices/taskListSlice";
+import { useAppDispatch } from "../../store/store";
+import { deleteTaskListAsync } from "../../slices/taskListSlice";
 
 const TaskListMenu = ({ id, onClick, setAddModalOpen }) => {
   const dispatch = useAppDispatch();
