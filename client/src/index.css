@@ -1,0 +1,127 @@
+/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */
+/* @ts-ignore */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+    font-family: "Omegle";
+    src: url(/src/fonts/OMEGLE.ttf);
+    font-family: "RobotoMonoRegular";
+    src: url(/src/fonts/RobotoMono-Medium.ttf);
+    font-family: "RobotoMonoThin";
+    src: url(/src/fonts/RobotoMono-Thin.ttf);
+    font-family: "RobotoMonoBold";
+    src: url(/src/fonts/RobotoMono-Bold.ttf);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.top {
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 50px), 0 100%);
+}
+
+.bottom {
+    clip-path: polygon(0 50px, 100% 0, 100% 100%, 0 100%);
+    margin-top: -40px;
+}
+
+.rounded-button {
+    border-radius: 0 5px 0 5px;
+}
+
+.wave {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    overflow: hidden;
+    line-height: 0;
+    transform: rotate(180deg);
+}
+
+.wave svg {
+    position: relative;
+    display: block;
+    width: calc(176% + 1.3px);
+    height: 108px;
+}
+
+input.error {
+    border: 1px solid red;
+}
+
+/* woman animation area */
+.womanBox {
+    max-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.womanBoxStyle {
+    padding: 1rem 1rem;
+}
+
+.womanBoxStyle p {
+    padding-top: 1rem;
+    line-height: 150%;
+}
+
+/* description and category */
+.title-column {
+    max-width: 8rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.area {
+    min-width: 12rem;
+    max-width: 12rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.description-column {
+    max-width: 14rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.category-column {
+    max-width: 7rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* The area where the description part is made invisible */
+@media (max-width: 640px) {
+    .description-column {
+        display: none;
+    }
+    /* The area where the buttons part are aligned */
+    .buttonArea {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: column;
+        row-gap: 8px;
+    }
+}
+/* The area where the buttons part are aligned */
+@media (max-width: 1215px) {
+    .buttonArea {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: column;
+        row-gap: 8px;
+    }
+}
