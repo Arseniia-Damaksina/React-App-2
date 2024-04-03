@@ -58,6 +58,8 @@ export class TaskService {
         priority,
         taskListId,
         taskListTitle,
+        taskBoardId,
+        taskBoard
       } = createTaskDto;
 
       const newTask = this.taskRepository.create({
@@ -67,6 +69,8 @@ export class TaskService {
         priority,
         taskListId,
         taskListTitle,
+        taskBoardId,
+        taskBoard
       });
 
       const savedTask = await this.taskRepository.save(newTask);
@@ -105,6 +109,8 @@ export class TaskService {
         priority,
         taskListId,
         taskListTitle,
+        taskBoardId,
+        taskBoard
       } = updateTaskDto;
 
       const originalTask = { ...task };
@@ -115,6 +121,8 @@ export class TaskService {
       task.priority = priority;
       task.taskListId = taskListId;
       task.taskListTitle = taskListTitle;
+      task.taskBoardId = taskBoardId;
+      task.taskBoard = taskBoard;
 
       const updatedTask = await this.taskRepository.save(task);
 

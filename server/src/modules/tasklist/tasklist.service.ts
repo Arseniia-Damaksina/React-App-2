@@ -43,24 +43,24 @@ export class TaskListService {
 
   async createTasklist(createTasklistDto: CreateTaskListDto): Promise<TaskListEntity> {
     try {
-      const { title } = createTasklistDto;
+      const { title, taskBoardId } = createTasklistDto;
     
       const newTasklist = this.taskListRepository.create({
-        title
+        title, taskBoardId
       });
 
       const savedTasklist = await this.taskListRepository.save(newTasklist);
       
-      await this.activityLogService.logAction({
-        actionType: taskListActions.CREATE_TASKLIST,
-        entityType: actionType.TASKLIST,
-        entityTypeId: savedTasklist.id,
-        createdAt: new Date(),
-        log: {
-          text: `New task list ${newTasklist.title} was created`,
-          date: formatDate(new Date())
-        }
-      });
+      // await this.activityLogService.logAction({
+      //   actionType: taskListActions.CREATE_TASKLIST,
+      //   entityType: actionType.TASKLIST,
+      //   entityTypeId: savedTasklist.id,
+      //   createdAt: new Date(),
+      //   log: {
+      //     text: `New task list ${newTasklist.title} was created`,
+      //     date: formatDate(new Date())
+      //   }
+      // });
 
       return savedTasklist;
     } catch (error) {

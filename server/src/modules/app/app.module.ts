@@ -6,6 +6,7 @@ import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import configurations from 'src/configurations';
 import { TaskListModule } from '../tasklist/tasklist.module';
 import { TaskModule } from '../task/task.module';
+import { TaskBoardModule } from '../taskboard/taskboard.module';
 
 @Module({
   imports: [
@@ -21,12 +22,12 @@ import { TaskModule } from '../task/task.module';
           type: 'postgres',
           url: 'postgres://db_user:tikbQtRvsYiaFW3oLhx70ky09CLsneRc@dpg-co2ino821fec73au2c5g-a.frankfurt-postgres.render.com/tasklists?sslmode=no-verify',
           autoLoadEntities: true,
-          entities: [TaskListModule, TaskModule],
+          entities: [TaskBoardModule, TaskListModule, TaskModule],
           synchronize: true
         };
       },
     }),
-    TaskListModule, TaskModule
+    TaskBoardModule, TaskListModule, TaskModule
   ],
   controllers: [AppController],
   providers: [AppService],

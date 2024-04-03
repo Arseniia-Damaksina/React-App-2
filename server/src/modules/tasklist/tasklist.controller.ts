@@ -31,9 +31,9 @@ export class TaskListController {
 
   @Get(':id')
   async getOneTasklist(@Param('id') id: string): Promise<TaskListEntity> {
-    const taskId = parseInt(id, 10);
+    const taskListId = parseInt(id, 10);
     try {
-      return await this.taskListService.getOneTasklist(taskId);
+      return await this.taskListService.getOneTasklist(taskListId);
     } catch (error) {
       throw new HttpException(
         'Failed to fetch task list',
@@ -63,9 +63,9 @@ export class TaskListController {
     @Param('id') id: string,
     @Body() updateTasklistDto: CreateTaskListDto,
   ): Promise<TaskListEntity> {
-    const taskId = parseInt(id, 10);
+    const taskListId = parseInt(id, 10);
     try {
-      const updatedTasklist = await this.taskListService.updateTasklist(taskId, updateTasklistDto);
+      const updatedTasklist = await this.taskListService.updateTasklist(taskListId, updateTasklistDto);
       return updatedTasklist;
     } catch (error) {
       throw new HttpException(
@@ -77,9 +77,9 @@ export class TaskListController {
 
   @Delete(':id/delete')
   async deleteTasklist(@Param('id') id: string): Promise<void> {
-    const taskId = parseInt(id, 10);
+    const taskListId = parseInt(id, 10);
     try {
-      await this.taskListService.deleteTasklist(taskId);
+      await this.taskListService.deleteTasklist(taskListId);
     } catch (error) {
       throw new HttpException(
         'Failed to delete task list',

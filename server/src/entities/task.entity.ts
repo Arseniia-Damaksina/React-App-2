@@ -27,11 +27,16 @@ export class TaskEntity {
 
   @ManyToOne(() => TaskListEntity, taskList => taskList.tasks, { onDelete: 'CASCADE' })
   taskList: TaskListEntity;
-  
 
   @Column()
   taskListId: number;
 
   @Column()
   taskListTitle: string;
+
+  @Column()
+  taskBoardId: number;
+
+  @Column()
+  taskBoard: string;
 }
