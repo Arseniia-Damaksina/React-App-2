@@ -54,6 +54,7 @@ const TaskColumn: React.FC<{ tasklist: TaskList, taskBoardId: number }> = ({ tas
     }
     dispatch(
       updateTaskListAsync({
+        taskBoardId,
         taskListId: tasklist.id,
         updatedTitle: capitalizeString(updatedTaskList),
       })
@@ -114,6 +115,7 @@ const TaskColumn: React.FC<{ tasklist: TaskList, taskBoardId: number }> = ({ tas
                 <span className="font-bold pr-1">{tasksByCategory.length}</span>
                 <TaskListMenu
                   id={tasklist.id}
+                  taskBoardId={taskBoardId}
                   onClick={handleButtonClick}
                   setAddModalOpen={setAddModalOpen}                 
                 />

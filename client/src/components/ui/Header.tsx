@@ -9,6 +9,8 @@ const Header: React.FC = () => {
   const currentPath = location.pathname;
   let headerTitle = "";
 
+  const taskBoardId = parseInt(currentPath.split("/")[2], 10);
+
   if (currentPath === "/") {
     headerTitle = "Task Boards";
   } else if (currentPath.startsWith("/taskboard")) {
@@ -27,7 +29,7 @@ const Header: React.FC = () => {
         {headerTitle !== "Task Boards" && (
           <>
             <HistoryButton />
-            <AddTasklistButton />
+            <AddTasklistButton taskBoardId={taskBoardId}/>
           </>
         )}
       </div>

@@ -6,7 +6,7 @@ import { capitalizeString } from "../../utils/utilFunctions";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const AddTasklistButton: React.FC = () => {
+const AddTasklistButton: React.FC<{ taskBoardId: number }> = ({ taskBoardId}) => {
   const dispatch = useAppDispatch();
   const [newTaskList, setNewTaskList] = useState<string>("");
   const [taskListForm, setTaskListForm] = useState<boolean>(false);
@@ -29,7 +29,7 @@ const AddTasklistButton: React.FC = () => {
       });
       return;
     }
-    dispatch(createTaskListAsync(capitalizeString(newTaskList)));
+    dispatch(createTaskListAsync({title: capitalizeString(newTaskList), taskBoardId}));
     setNewTaskList("");
     setTaskListForm(false);
   };

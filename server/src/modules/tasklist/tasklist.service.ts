@@ -6,17 +6,6 @@ import { CreateTaskListDto } from 'src/DTOs/create-tasklist.dto';
 import { ActivityLogService } from 'src/modules/activityLog/activityLog.service';
 import formatDate from 'src/utils/formatDate';
 
-const taskListActions = {
-  CREATE_TASKLIST: 'CREATE_TASKLIST',
-  RENAME_TASKLIST: 'RENAME_TASKLIST',
-  DELETE_TASKLIST: 'DELETE_TASKLIST'
-}
-
-const actionType = {
-  TASKLIST: 'tasklist',
-  TASK: 'task'
-}
-
 @Injectable()
 export class TaskListService {
   constructor(
@@ -33,81 +22,44 @@ export class TaskListService {
     }
   }
 
-  async getOneTasklist(id: number): Promise<TaskListEntity> {
+  async getOneTasklist(taskBoardId: number, id: number): Promise<TaskListEntity> {
     try {
-      return await this.taskListRepository.findOne({ where: { id } });
+      return await this.taskListRepository.findOne({ where: { taskBoardId, id } });
     } catch (error) {
       throw new Error('Failed to fetch task list');
     }
   }
-
+  
   async createTasklist(createTasklistDto: CreateTaskListDto): Promise<TaskListEntity> {
     try {
-      const { title, taskBoardId } = createTasklistDto;
-    
+      const { title, taskBoardId } = createTasklistDto;    
       const newTasklist = this.taskListRepository.create({
         title, taskBoardId
       });
-
       const savedTasklist = await this.taskListRepository.save(newTasklist);
       
-      // await this.activityLogService.logAction({
-      //   actionType: taskListActions.CREATE_TASKLIST,
-      //   entityType: actionType.TASKLIST,
-      //   entityTypeId: savedTasklist.id,
-      //   createdAt: new Date(),
-      //   log: {
-      //     text: `New task list ${newTasklist.title} was created`,
-      //     date: formatDate(new Date())
-      //   }
-      // });
-
       return savedTasklist;
     } catch (error) {
       throw new Error('Failed to create task list');
     }
   }
 
-  async updateTasklist(id: number, updateTasklistDto: CreateTaskListDto): Promise<TaskListEntity> {
+  async updateTasklist(taskBoardId: number, id: number, updateTasklistDto: CreateTaskListDto): Promise<TaskListEntity> {
     try {
-      const tasklist = await this.getOneTasklist(id);
-      const tasklistOriginal = tasklist.title;
+      const tasklist = await this.getOneTasklist(taskBoardId, id);
       tasklist.title = updateTasklistDto.title;
       const updatedTasklist = await this.taskListRepository.save(tasklist);
       
-      await this.activityLogService.logAction({
-        actionType: taskListActions.RENAME_TASKLIST,
-        entityType: actionType.TASKLIST,
-        entityTypeId: updatedTasklist.id,
-        createdAt: new Date(),
-        log: {
-          text: `Task list was renamed from ${tasklistOriginal} to ${updateTasklistDto.title}`,
-          date: formatDate(new Date())
-        }
-      });
-
       return updatedTasklist;
     } catch (error) {
       throw new Error('Failed to update task list');
     }
   }
 
-  async deleteTasklist(id: number): Promise<string> {
+  async deleteTasklist(taskBoardId: number, id: number): Promise<string> {
     try {
-      const tasklist = await this.getOneTasklist(id);
-      const tasklistOriginal = tasklist.title;
+      const tasklist = await this.getOneTasklist(taskBoardId, id);
       await this.taskListRepository.remove(tasklist);
-
-      await this.activityLogService.logAction({
-        actionType: taskListActions.DELETE_TASKLIST,
-        entityType: actionType.TASKLIST,
-        entityTypeId: id,
-        createdAt: new Date(),
-        log: {
-          text: `Task list ${tasklistOriginal} was deleted`,
-          date: formatDate(new Date())
-        }       
-      });
 
       return `Task list ${tasklist.title} has been successfully deleted.`;
     } catch (error) {

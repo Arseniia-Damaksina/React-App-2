@@ -10,10 +10,10 @@ const TaskArea: React.FC = () => {
   const tasklists = useSelector(selectTaskLists);
   const location = useLocation();
 
-  const taskBoardId = location.pathname.split("/")[2];
+  const taskBoardId = parseInt(location.pathname.split("/")[2], 10);
 
   const tasksByBoard = tasklists.filter(
-    (tasklist) => tasklist.taskBoardId === parseInt(taskBoardId, 10)
+    (tasklist) => tasklist.taskBoardId === taskBoardId
   );
 
   const closedTasklistIndex = tasksByBoard.findIndex(
@@ -36,7 +36,7 @@ const TaskArea: React.FC = () => {
   return (
     <div className="flex flex-col items-center sm:flex-row sm:items-start mx-6 overflow-x-scroll min-h-3/4 h-auto sm:flex-wrap md:flex-nowrap">
       {modifiedTasklists.map((tasklist) => {
-        return <TaskColumn key={tasklist.id} tasklist={tasklist} taskBoardId={parseInt(taskBoardId, 10)}/>;
+        return <TaskColumn key={tasklist.id} tasklist={tasklist} taskBoardId={taskBoardId}/>;
       })}
     </div>
   );

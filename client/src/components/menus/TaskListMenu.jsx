@@ -13,11 +13,11 @@ import {
 import { useAppDispatch } from "../../store/store";
 import { deleteTaskListAsync } from "../../slices/taskListSlice";
 
-const TaskListMenu = ({ id, onClick, setAddModalOpen }) => {
+const TaskListMenu = ({ id, taskBoardId, onClick, setAddModalOpen }) => {
   const dispatch = useAppDispatch();
 
-  const handleDeleteTaskList = (taskListId) => {
-    dispatch(deleteTaskListAsync(taskListId));
+  const handleDeleteTaskList = (boardId, id) => {
+    dispatch(deleteTaskListAsync({taskBoardId: boardId, taskListId: id}));
   };
 
   return (
@@ -37,7 +37,7 @@ const TaskListMenu = ({ id, onClick, setAddModalOpen }) => {
           <PlusIcon className="w-5 h-5 mr-1" /> Add New Task
         </MenuItem>
         <MenuItem
-          onClick={() => handleDeleteTaskList(id)}
+          onClick={() => handleDeleteTaskList(taskBoardId, id)}
           className="flex items-center mb-1 text-primary"
         >
           <TrashIcon className="w-5 h-5 mr-1" />
