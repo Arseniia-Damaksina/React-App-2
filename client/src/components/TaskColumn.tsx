@@ -3,9 +3,9 @@ import { useSelector } from "react-redux";
 import { useAppDispatch } from "../store/store";
 import { TaskList } from "../types/types";
 // @ts-ignore
-import TaskListMenu from "./TaskListMenu";
+import TaskListMenu from "./menus/TaskListMenu";
 import Task from "./Task";
-import AddTaskButton from "./buttons/AddTaskButton";
+import AddButton from "./buttons/AddButton";
 import AddTaskForm from "./forms/AddTaskForm";
 import { updateTaskListAsync, selectTaskLists } from "../slices/taskListSlice";
 import { fetchTasksAsync, selectTasks } from "../slices/taskSlice";
@@ -14,7 +14,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { capitalizeString } from "../utils/utilFunctions";
 
-const TaskColumn: React.FC<{ tasklist: TaskList }> = ({ tasklist }) => {
+const TaskColumn: React.FC<{ tasklist: TaskList, taskBoardId: number }> = ({ tasklist, taskBoardId }) => {
   const dispatch = useAppDispatch();
   const tasks = useSelector(selectTasks);
   const tasklists = useSelector(selectTaskLists);
@@ -31,7 +31,7 @@ const TaskColumn: React.FC<{ tasklist: TaskList }> = ({ tasklist }) => {
   }, [dispatch]);
 
   const tasksByCategory = tasks.filter(
-    (task) => task.taskListTitle === tasklist.title
+    (task) => task.taskListTitle === tasklist.title && task.taskBoardId === tasklist.taskBoardId
   );
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -115,12 +115,11 @@ const TaskColumn: React.FC<{ tasklist: TaskList }> = ({ tasklist }) => {
                 <TaskListMenu
                   id={tasklist.id}
                   onClick={handleButtonClick}
-                  setAddModalOpen={setAddModalOpen}
-                  
+                  setAddModalOpen={setAddModalOpen}                 
                 />
               </div>
             </div>
-            <AddTaskButton onClick={() => setAddModalOpen(true)} />
+            <AddButton text={"Add New Task"} onClick={() => setAddModalOpen(true)} />
             <div>
               {tasksByCategory.map((task) => {
                 return (

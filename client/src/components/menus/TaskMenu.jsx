@@ -11,9 +11,9 @@ import {
   TrashIcon,
   FolderOpenIcon,
 } from "@heroicons/react/24/outline";
-import { useAppDispatch } from "../store/store";
-import { deleteTaskAsync } from "../slices/taskSlice";
-import { fetchTasksAsync } from "../slices/taskSlice";
+import { useAppDispatch } from "../../store/store";
+import { deleteTaskAsync } from "../../slices/taskSlice";
+import { fetchTasksAsync } from "../../slices/taskSlice";
 
 const TaskMenu = ({ id, setEditModalOpen, setTaskModalOpen }) => {
   const dispatch = useAppDispatch();
