@@ -10,6 +10,10 @@ const TaskArea: React.FC = () => {
   const tasklists = useSelector(selectTaskLists);
   const location = useLocation();
 
+  useEffect(() => {
+    dispatch(fetchTaskListsAsync());
+  }, [dispatch]);
+
   const taskBoardId = parseInt(location.pathname.split("/")[2], 10);
 
   const tasksByBoard = tasklists.filter(
@@ -26,12 +30,6 @@ const TaskArea: React.FC = () => {
   if (closedTasklistIndex !== -1) {
     modifiedTasklists.push(tasksByBoard[closedTasklistIndex]);
   }
-
-  console.log(modifiedTasklists)
-
-  useEffect(() => {
-    dispatch(fetchTaskListsAsync());
-  }, [dispatch]);
 
   return (
     <div className="flex flex-col items-center sm:flex-row sm:items-start mx-6 overflow-x-scroll min-h-3/4 h-auto sm:flex-wrap md:flex-nowrap">

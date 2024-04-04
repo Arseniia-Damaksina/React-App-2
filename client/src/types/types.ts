@@ -16,7 +16,6 @@ export interface TaskInterface {
   taskListId: number;
   taskListTitle: string;
   taskBoardId: number;
-  taskBoard: string;
 }
 
 export interface addTask {
@@ -26,6 +25,7 @@ export interface addTask {
   priority: string;
   taskListId: number;
   taskListTitle: string
+  taskBoardId: number;
 }
 
 export interface TasksState {

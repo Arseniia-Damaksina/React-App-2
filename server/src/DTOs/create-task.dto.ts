@@ -33,8 +33,5 @@ export class CreateTaskDto {
 
   @IsString()
   taskListTitle: string;
-
-  @IsString()
-  taskBoard: string;
 }
 

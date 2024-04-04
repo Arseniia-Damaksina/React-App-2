@@ -36,7 +36,4 @@ export class TaskEntity {
 
   @Column()
   taskBoardId: number;
-
-  @Column()
-  taskBoard: string;
 }
