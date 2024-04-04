@@ -24,7 +24,7 @@ const Header: React.FC = () => {
         </p>
       </div>
       <div className="flex">
-        {headerTitle === "My Task Board" && (
+        {headerTitle !== "Task Boards" && (
           <>
             <HistoryButton />
             <AddTasklistButton />

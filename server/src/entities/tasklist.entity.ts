@@ -10,7 +10,7 @@ export class TaskListEntity {
     @Column()
     title: string;
 
-    @ManyToOne(() => TaskBoardEntity, taskBoard => taskBoard.taskLists)
+    @ManyToOne(() => TaskBoardEntity, taskBoard => taskBoard.taskLists, { onDelete: 'CASCADE' })
     @JoinColumn({ name: 'taskBoardId' })
     taskBoard: TaskBoardEntity;
 

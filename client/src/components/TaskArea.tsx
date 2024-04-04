@@ -36,7 +36,7 @@ const TaskArea: React.FC = () => {
   return (
     <div className="flex flex-col items-center sm:flex-row sm:items-start mx-6 overflow-x-scroll min-h-3/4 h-auto sm:flex-wrap md:flex-nowrap">
       {modifiedTasklists.map((tasklist) => {
-        return <TaskColumn key={tasklist.id} tasklist={tasklist} />;
+        return <TaskColumn key={tasklist.id} tasklist={tasklist} taskBoardId={parseInt(taskBoardId, 10)}/>;
       })}
     </div>
   );

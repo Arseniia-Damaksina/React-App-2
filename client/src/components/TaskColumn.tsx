@@ -14,7 +14,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { capitalizeString } from "../utils/utilFunctions";
 
-const TaskColumn: React.FC<{ tasklist: TaskList }> = ({ tasklist }) => {
+const TaskColumn: React.FC<{ tasklist: TaskList, taskBoardId: number }> = ({ tasklist, taskBoardId }) => {
   const dispatch = useAppDispatch();
   const tasks = useSelector(selectTasks);
   const tasklists = useSelector(selectTaskLists);
@@ -31,7 +31,7 @@ const TaskColumn: React.FC<{ tasklist: TaskList }> = ({ tasklist }) => {
   }, [dispatch]);
 
   const tasksByCategory = tasks.filter(
-    (task) => task.taskListTitle === tasklist.title
+    (task) => task.taskListTitle === tasklist.title && task.taskBoardId === tasklist.taskBoardId
   );
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -115,8 +115,7 @@ const TaskColumn: React.FC<{ tasklist: TaskList }> = ({ tasklist }) => {
                 <TaskListMenu
                   id={tasklist.id}
                   onClick={handleButtonClick}
-                  setAddModalOpen={setAddModalOpen}
-                  
+                  setAddModalOpen={setAddModalOpen}                 
                 />
               </div>
             </div>

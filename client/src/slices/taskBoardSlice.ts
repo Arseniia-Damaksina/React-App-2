@@ -91,9 +91,12 @@ const taskBoardsSlice = createSlice({
       .addCase(updateTaskBoardAsync.fulfilled, (state, action) => {
         state.status = "succeeded";
         const { taskBoardId, updatedBoard } = action.payload;
-        const taskListIndex = state.taskBoards.findIndex(taskBoard => taskBoard.id === taskBoardId);
-        if (taskListIndex !== -1) {
-          state.taskBoards[taskListIndex].board = updatedBoard;
+        const updatedTaskIndex = state.taskBoards.findIndex((taskBoard) => taskBoard.id === taskBoardId);
+        if (updatedTaskIndex !== -1) {
+          state.taskBoards[updatedTaskIndex].board = updatedBoard;
+          const updatedTask = state.taskBoards[updatedTaskIndex];
+          state.taskBoards.splice(updatedTaskIndex, 1); 
+          state.taskBoards.splice(updatedTaskIndex, 0, updatedTask); 
         }
       })
       .addCase(updateTaskBoardAsync.rejected, (state, action) => {
