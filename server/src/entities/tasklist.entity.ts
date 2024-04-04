@@ -14,7 +14,7 @@ export class TaskListEntity {
     @JoinColumn({ name: 'taskBoardId' })
     taskBoard: TaskBoardEntity;
 
-    @Column({ nullable: false })
+    @Column()
     taskBoardId: number;
 
     @OneToMany(() => TaskEntity, task => task.taskList)

@@ -16,8 +16,8 @@ export class ActivityLogService {
   ): Promise<ActivityLogEntity> {
     const activityLog = new ActivityLogEntity();
     activityLog.actionType = activityLogDto.actionType;
-    activityLog.entityType = activityLogDto.entityType;
-    activityLog.entityTypeId = activityLogDto.entityTypeId;
+    activityLog.taskId = activityLogDto.taskId;
+    activityLog.taskBoardId = activityLogDto.taskBoardId;
     activityLog.log = activityLogDto.log;
     activityLog.createdAt = activityLogDto.createdAt;
     
@@ -28,20 +28,11 @@ export class ActivityLogService {
     return this.activityLogRepository.find();
   }
 
-  async getActionsByTypeAndId(
-    type: string,
-    id: number,
+  async getActionsByTaskBoard(
+    taskBoardId: number,
   ): Promise<ActivityLogEntity[]> {
     return this.activityLogRepository.find({
-      where: { entityType: type, entityTypeId: id },
-    });
-  }
-
-  async getActionsByType(
-    type: string
-  ): Promise<ActivityLogEntity[]> {
-    return this.activityLogRepository.find({
-      where: { entityType: type },
+      where: { taskBoardId },
     });
   }
 

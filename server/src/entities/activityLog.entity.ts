@@ -9,18 +9,17 @@ export class ActivityLogEntity {
   actionType: string;
 
   @Column()
-  entityType: string;
+  taskId: number;
 
   @Column()
-  entityTypeId: number;
+  taskBoardId: number;
+  
+  @CreateDateColumn()
+  createdAt: Date;
 
   @Column('jsonb')
   log: {
     text: string,
     date: string
   };
-
-
-  @CreateDateColumn()
-  createdAt: Date;
 }

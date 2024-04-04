@@ -1,13 +1,3 @@
-// export class CreateActivityLogDto {
-//   actionType: string;
-//   entityType: string;
-//   entityTypeId: number;
-//   createdAt: Date;
-//   log: {
-//     text: string,
-//     date: string    
-//   };
-// }
 
 import { IsString, IsNumber, IsDate, ValidateNested } from 'class-validator';
 
@@ -23,11 +13,11 @@ export class CreateActivityLogDto {
   @IsString()
   actionType: string;
 
-  @IsString()
-  entityType: string;
+  @IsNumber()
+  taskId: number;
 
   @IsNumber()
-  entityTypeId: number;
+  taskBoardId: number;
 
   @IsDate()
   createdAt: Date;

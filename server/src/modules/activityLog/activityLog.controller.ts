@@ -29,28 +29,13 @@ export class ActivityLogController {
     }
   }
 
-  @Get(':type')
-  async getActionsByType(
-    @Param('type') type: string,
+  @Get(':taskBoardId/')
+  async getActionsByTaskBoardId(
+    @Param('taskBoardId') taskBoardId: string,
   ): Promise<ActivityLogEntity[]> {
+    const boardId = parseInt(taskBoardId, 10);
     try {
-      return await this.activityLogService.getActionsByType(type);
-    } catch (error) {
-      throw new HttpException(
-        'Failed to fetch activity logs',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
-  }
-
-  @Get(':type/:id')
-  async getActionsByTypeAndId(
-    @Param('type') type: string,
-    @Param('id') id: string,
-  ): Promise<ActivityLogEntity[]> {
-    const entityId = parseInt(id, 10);
-    try {
-      return await this.activityLogService.getActionsByTypeAndId(type, entityId);
+      return await this.activityLogService.getActionsByTaskBoard(boardId);
     } catch (error) {
       throw new HttpException(
         'Failed to fetch activity logs',

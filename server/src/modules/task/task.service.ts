@@ -17,11 +17,6 @@ const taskActions = {
   DELETE_TASK: 'DELETE_TASK',
 };
 
-const actionType = {
-  TASKLIST: 'tasklist',
-  TASK: 'task',
-};
-
 @Injectable()
 export class TaskService {
   constructor(
@@ -75,8 +70,8 @@ export class TaskService {
 
       await this.activityLogService.logAction({
         actionType: taskActions.CREATE_TASK,
-        entityType: actionType.TASK,
-        entityTypeId: savedTask.id,
+        taskId: savedTask.id,
+        taskBoardId: savedTask.taskBoardId,
         createdAt: new Date(),
         log: {
           text: `Task ${newTask.name} was created`,
@@ -125,8 +120,8 @@ export class TaskService {
       if (originalTask.name !== updatedTask.name) {
         await this.activityLogService.logAction({
           actionType: taskActions.RENAME_TASK,
-          entityType: actionType.TASK,
-          entityTypeId: updatedTask.id,
+          taskId: updatedTask.id,
+          taskBoardId: updatedTask.taskBoardId,
           createdAt: new Date(),
           log: {
             text: `Task was renamed from ${originalTask.name} to ${updatedTask.name}`,
@@ -138,8 +133,8 @@ export class TaskService {
       if (originalTask.description !== updatedTask.description) {
         await this.activityLogService.logAction({
           actionType: taskActions.UPDATE_DESC,
-          entityType: actionType.TASK,
-          entityTypeId: updatedTask.id,
+          taskId: updatedTask.id,
+          taskBoardId: updatedTask.taskBoardId,
           createdAt: new Date(),
           log: {
             text: `Task description at ${updatedTask.name} was changed`,
@@ -151,8 +146,8 @@ export class TaskService {
       if (originalTask.dueDate !== updatedTask.dueDate) {
         await this.activityLogService.logAction({
           actionType: taskActions.UPDATE_DATE,
-          entityType: actionType.TASK,
-          entityTypeId: updatedTask.id,
+          taskId: updatedTask.id,
+          taskBoardId: updatedTask.taskBoardId,
           createdAt: new Date(),
           log: {
             text: `Due date at ${updatedTask.name} was changed from ${originalTask.dueDate} to ${updatedTask.dueDate}`,
@@ -164,8 +159,8 @@ export class TaskService {
       if (originalTask.priority !== updatedTask.priority) {
         await this.activityLogService.logAction({
           actionType: taskActions.UPDATE_PRIORITY,
-          entityType: actionType.TASK,
-          entityTypeId: updatedTask.id,
+          taskId: updatedTask.id,
+          taskBoardId: updatedTask.taskBoardId,
           createdAt: new Date(),
           log: {
             text: `Priority at ${updatedTask.name} was changed from ${originalTask.priority} to ${updatedTask.priority}`,
@@ -177,8 +172,8 @@ export class TaskService {
       if (originalTask.taskListId !== updatedTask.taskListId) {
         await this.activityLogService.logAction({
           actionType: taskActions.UPDATE_TASKLIST,
-          entityType: actionType.TASK,
-          entityTypeId: updatedTask.id,
+          taskId: updatedTask.id,
+          taskBoardId: updatedTask.taskBoardId,
           createdAt: new Date(),
           log: {
             text: `Task ${updatedTask.name} was moved from ${originalTask.taskListTitle} to ${updatedTask.taskListTitle}`,
@@ -201,8 +196,8 @@ export class TaskService {
 
       await this.activityLogService.logAction({
         actionType: taskActions.DELETE_TASK,
-        entityType: actionType.TASK,
-        entityTypeId: id,
+        taskId: id,
+        taskBoardId: originalTask.taskBoardId,
         createdAt: new Date(),
         log: {
           text: `Task ${originalTask.name} was deleted`,

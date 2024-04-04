@@ -1,5 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, OneToOne, JoinColumn } from 'typeorm';
 import { TaskListEntity } from './tasklist.entity';
+import { ActivityLogEntity } from './activityLog.entity';
 
 @Entity()
 export class TaskBoardEntity {
@@ -8,6 +9,10 @@ export class TaskBoardEntity {
 
     @Column()
     board: string;
+
+    @OneToOne(() => ActivityLogEntity, { onDelete: 'CASCADE' })
+    @JoinColumn()
+    activityLog: ActivityLogEntity;
 
     @OneToMany(() => TaskListEntity, taskList => taskList.taskBoard)
     taskLists: TaskListEntity[];
