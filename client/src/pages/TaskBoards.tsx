@@ -119,7 +119,7 @@ const TaskBoards: React.FC = () => {
                     className="w-64 p-3 mb-3 rounded-lg bg-secondary text-white text-xl font-bold flex justify-between items-center"
                     onClick={() => handleNavigate(taskboard.id)}
                   >
-                    <p>{taskboard.board}</p>
+                    <p>{capitalizeString(taskboard.board)}</p>
                     <TaskBoardMenu
                       taskboard={taskboard}
                       onEdit={handleEditForm}
