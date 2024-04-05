@@ -19,6 +19,8 @@ const TaskColumn: React.FC<{ tasklist: TaskList, taskBoardId: number }> = ({ tas
   const tasks = useSelector(selectTasks);
   const tasklists = useSelector(selectTaskLists);
 
+  const selectOptions = tasklists.filter((tasklist) => tasklist.taskBoardId === taskBoardId);
+
   const [open, setOpen] = React.useState<number | null>(null);
   const [addModalOpen, setAddModalOpen] = React.useState<boolean>(false);
   const [updatedTaskList, setUpdatedTaskList] = React.useState<string>(
@@ -33,6 +35,7 @@ const TaskColumn: React.FC<{ tasklist: TaskList, taskBoardId: number }> = ({ tas
   const tasksByCategory = tasks.filter(
     (task) => task.taskListTitle === tasklist.title && task.taskBoardId === tasklist.taskBoardId
   );
+
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUpdatedTaskList(e.target.value);
@@ -54,6 +57,7 @@ const TaskColumn: React.FC<{ tasklist: TaskList, taskBoardId: number }> = ({ tas
     }
     dispatch(
       updateTaskListAsync({
+        taskBoardId,
         taskListId: tasklist.id,
         updatedTitle: capitalizeString(updatedTaskList),
       })
@@ -114,6 +118,7 @@ const TaskColumn: React.FC<{ tasklist: TaskList, taskBoardId: number }> = ({ tas
                 <span className="font-bold pr-1">{tasksByCategory.length}</span>
                 <TaskListMenu
                   id={tasklist.id}
+                  taskBoardId={taskBoardId}
                   onClick={handleButtonClick}
                   setAddModalOpen={setAddModalOpen}                 
                 />
@@ -126,6 +131,7 @@ const TaskColumn: React.FC<{ tasklist: TaskList, taskBoardId: number }> = ({ tas
                   <Task
                     key={task.id}
                     task={task}
+                    selectOptions={selectOptions}
                     tasklists={tasklists}
                     closed={false}
                     open={null}
@@ -153,6 +159,7 @@ const TaskColumn: React.FC<{ tasklist: TaskList, taskBoardId: number }> = ({ tas
                     open={open}
                     closed={true}
                     setOpen={setOpen}
+                    selectOptions={selectOptions}
                   />
                 );
               })}

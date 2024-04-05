@@ -23,9 +23,9 @@ export const fetchTaskListsAsync = createAsyncThunk(
 
 export const createTaskListAsync = createAsyncThunk(
   "taskLists/createTaskList",
-  async (title: string) => {
+  async ({title, taskBoardId}: { title: string, taskBoardId: number}) => {
     try {
-      const response = await createTaskList(title);
+      const response = await createTaskList(title, taskBoardId);
       return response.data as TaskList;
     } catch (error) {
       throw new Error("Failed to create task list");
@@ -35,9 +35,9 @@ export const createTaskListAsync = createAsyncThunk(
 
 export const updateTaskListAsync = createAsyncThunk(
   "taskLists/updateTaskList",
-  async ({ taskListId, updatedTitle }: { taskListId: number, updatedTitle: string }) => {
+  async ({taskBoardId, taskListId, updatedTitle }: { taskBoardId: number, taskListId: number, updatedTitle: string }) => {
     try {
-      await updateTaskList(taskListId, updatedTitle);
+      await updateTaskList(taskBoardId, taskListId, updatedTitle);
       return { taskListId, updatedTitle };
     } catch (error) {
       throw new Error("Failed to edit task list");
@@ -47,9 +47,9 @@ export const updateTaskListAsync = createAsyncThunk(
 
 export const deleteTaskListAsync = createAsyncThunk(
   "taskLists/deleteTaskList",
-  async (taskListId: number) => {
+  async ({taskBoardId, taskListId}: { taskBoardId: number, taskListId: number}) => {
     try {
-      await deleteTaskList(taskListId);
+      await deleteTaskList(taskBoardId,taskListId);
       return taskListId;
     } catch (error) {
       throw new Error("Failed to delete task list");

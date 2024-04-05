@@ -80,7 +80,7 @@ const TaskBoards: React.FC = () => {
     <div>
       <Header />
       <div className="flex flex-col items-center">
-        <h1 className="text-3xl font-bold my-5">Choose Your Task Board</h1>
+        <h1 className="text-3xl font-bold my-5 text-center">Choose Your Task Board</h1>
         <div className="flex flex-col items-center">
           <AddTaskBoardButton />
           {taskboards.map((taskboard) => {

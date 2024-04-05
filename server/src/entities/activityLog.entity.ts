@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, OneToOne } from 'typeorm';
+import { TaskBoardEntity } from './taskboard.entity';
 
 @Entity()
 export class ActivityLogEntity {
@@ -9,18 +10,17 @@ export class ActivityLogEntity {
   actionType: string;
 
   @Column()
-  entityType: string;
+  taskId: number;
 
   @Column()
-  entityTypeId: number;
+  taskBoardId: number;
+  
+  @CreateDateColumn()
+  createdAt: Date;
 
   @Column('jsonb')
   log: {
     text: string,
     date: string
   };
-
-
-  @CreateDateColumn()
-  createdAt: Date;
 }

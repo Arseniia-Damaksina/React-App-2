@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useAppDispatch } from "../../store/store";
-import { updateTaskAsync } from "../../slices/taskSlice";
+import { fetchTasksAsync, updateTaskAsync } from "../../slices/taskSlice";
 import { addTask, FormData, TaskInterface } from "../../types/types";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -39,9 +39,10 @@ const EditTaskForm: React.FC<{
     name: capitalizeFirstLetter(formData.name),
     taskListId: task.taskListId,
     taskListTitle: task.taskListTitle,
+    taskBoardId: task.taskBoardId
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!formData.name.trim()) {
@@ -85,8 +86,15 @@ const EditTaskForm: React.FC<{
       return;
     }
 
-    dispatch(updateTaskAsync({ taskId: task.id, updatedTask: taskToUpdate }));
-    window.location.reload();
+    await dispatch(updateTaskAsync({ taskId: task.id, updatedTask: taskToUpdate }))
+    await dispatch(fetchTasksAsync())
+    setFormData({
+      name: "",
+      description: "",
+      dueDate: "",
+      priority: "",
+    });
+    setEditModalOpen(false);
   };
 
   return (

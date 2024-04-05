@@ -1,4 +1,5 @@
 import React from "react";
+import { useLocation } from "react-router-dom";
 import { TaskInterface } from "../types/types";
 import {
   PencilSquareIcon,
@@ -10,7 +11,10 @@ import {
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useAppDispatch } from "../store/store";
-import { fetchLogsByTypeAndId, selectActivity } from "../slices/activitySlice";
+import {
+  fetchLogsByTaskBoardId,
+  selectActivity,
+} from "../slices/activitySlice";
 
 const TaskCard: React.FC<{
   task: TaskInterface;
@@ -20,9 +24,12 @@ const TaskCard: React.FC<{
   const dispatch = useAppDispatch();
   const activityLogs = useSelector(selectActivity);
 
+  const location = useLocation();
+  const taskBoardId = parseInt(location.pathname.split("/")[2], 10);
+
   useEffect(() => {
-    dispatch(fetchLogsByTypeAndId({ type: "task", id: task.id }));
-  }, [dispatch, task.id]);
+    dispatch(fetchLogsByTaskBoardId({ taskBoardId }));
+  }, [dispatch, taskBoardId]);
 
   const handleEdit = () => {
     setEditModalOpen(true);
@@ -83,15 +90,17 @@ const TaskCard: React.FC<{
           <ul>
             {activityLogs.length > 0 ? (
               <ul>
-                {activityLogs.map((activity) => (
-                  <li
-                    className="flex m-3 text-sm text-gray-600"
-                    key={activity.id}
-                  >
-                    <p className="w-2/3 mr-3">- {activity.log.text}</p>
-                    <p className="w-1/3">{activity.log.date}</p>
-                  </li>
-                ))}
+                {activityLogs
+                  .filter((activity) => activity.taskId === task.id)
+                  .map((activity) => (
+                    <li
+                      className="flex m-3 text-sm text-gray-600"
+                      key={activity.id}
+                    >
+                      <p className="w-2/3 mr-3">- {activity.log.text}</p>
+                      <p className="w-1/3">{activity.log.date}</p>
+                    </li>
+                  ))}
               </ul>
             ) : (
               <p className="text-gray-600">No activity logs found</p>

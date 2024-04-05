@@ -13,10 +13,11 @@ import TaskCard from "./TaskCard";
 const Task: React.FC<{
   task: TaskInterface;
   tasklists: TaskList[];
+  selectOptions: TaskList[];
   open: null | number;
   setOpen: React.Dispatch<React.SetStateAction<null | number>>;
   closed: boolean;
-}> = ({ task, tasklists, closed }) => {
+}> = ({ task, selectOptions, closed }) => {
   
   const [selectMove, setSelectMove] = useState<string>("Move To");
   const [open, setOpen] = React.useState<number | null>(null);
@@ -34,7 +35,7 @@ const Task: React.FC<{
     const selectedOption = e.target.value;
     setSelectMove(selectedOption);
 
-    const updatedTaskList = tasklists.find(
+    const updatedTaskList = selectOptions.find(
       (tasklist) => tasklist.title === selectedOption
     );
 
@@ -49,11 +50,10 @@ const Task: React.FC<{
           },
         })
       );
+      await dispatch(fetchTasksAsync());
     } else {
       console.error("Task list not found for selected option:", selectedOption);
     }
-
-    window.location.reload();
   };
 
   const handleOpen = (value: number) => {
@@ -139,8 +139,8 @@ const Task: React.FC<{
               className="w-full p-1 rounded-lg mt-3"
             >
               <option value="">Move To</option>
-              {tasklists
-                .filter((taskList) => taskList.title !== task.taskListTitle)
+              {
+                selectOptions.filter((taskList) => taskList.title !== task.taskListTitle)
                 .map((taskList) => (
                   <option key={taskList.id} value={taskList.title}>
                     {taskList.title}

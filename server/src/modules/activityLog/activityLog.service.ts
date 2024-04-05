@@ -11,43 +11,34 @@ export class ActivityLogService {
     private readonly activityLogRepository: Repository<ActivityLogEntity>,
   ) {}
 
+  async getAllActions(): Promise<ActivityLogEntity[]> {
+    return this.activityLogRepository.find();
+  }
+
+  async getActionsByTaskBoard(
+    taskBoardId: number,
+  ): Promise<ActivityLogEntity[]> {
+    return this.activityLogRepository.find({
+      where: { taskBoardId },
+    });
+  }
+
   async logAction(
     activityLogDto: CreateActivityLogDto,
   ): Promise<ActivityLogEntity> {
     const activityLog = new ActivityLogEntity();
     activityLog.actionType = activityLogDto.actionType;
-    activityLog.entityType = activityLogDto.entityType;
-    activityLog.entityTypeId = activityLogDto.entityTypeId;
+    activityLog.taskId = activityLogDto.taskId;
+    activityLog.taskBoardId = activityLogDto.taskBoardId;
     activityLog.log = activityLogDto.log;
     activityLog.createdAt = activityLogDto.createdAt;
     
     return this.activityLogRepository.save(activityLog);
   }
 
-  async getAllActions(): Promise<ActivityLogEntity[]> {
-    return this.activityLogRepository.find();
-  }
-
-  async getActionsByTypeAndId(
-    type: string,
-    id: number,
-  ): Promise<ActivityLogEntity[]> {
-    return this.activityLogRepository.find({
-      where: { entityType: type, entityTypeId: id },
-    });
-  }
-
-  async getActionsByType(
-    type: string
-  ): Promise<ActivityLogEntity[]> {
-    return this.activityLogRepository.find({
-      where: { entityType: type },
-    });
-  }
-
-  async clearActivityLog(): Promise<void> {
+  async deleteActivityLogByTaskBoardId(taskBoardId: number): Promise<void> {
     try {
-      await this.activityLogRepository.clear();
+      await this.activityLogRepository.delete({ taskBoardId });
     } catch (error) {
       throw new Error('Failed to clear activity log');
     }

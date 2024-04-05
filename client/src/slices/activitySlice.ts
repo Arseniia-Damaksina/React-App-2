@@ -3,7 +3,7 @@ import { Activity, ActivityState } from "../types/types";
 import { RootState } from "../store/rootReducer";
 import {
   getAllActivityLogs,
-  getLogsByTypeAndId,
+  getLogsByTaskBoardId,
   logActivity,
   clearActivityLog,
 } from "../api/activityAPI";
@@ -26,11 +26,11 @@ export const fetchAllActivityLogs = createAsyncThunk(
   }
 );
 
-export const fetchLogsByTypeAndId = createAsyncThunk(
-  "activity/fetchLogsByTypeAndId",
-  async ({ type, id }: { type: string; id: number }) => {
+export const fetchLogsByTaskBoardId = createAsyncThunk(
+  "activity/fetchLogsByTaskBoardId",
+  async ({ taskBoardId }: { taskBoardId: number }) => {
     try {
-      const response = await getLogsByTypeAndId(type, id);
+      const response = await getLogsByTaskBoardId(taskBoardId);
       return response.data;
     } catch (error) {
       throw new Error("Failed to fetch activity logs by type and ID");
@@ -52,9 +52,9 @@ export const logOneActivity = createAsyncThunk(
 
 export const clearActivityLogs = createAsyncThunk(
   "activity/clearActivityLogs",
-  async () => {
+  async (taskBoardId: number) => {
     try {
-      await clearActivityLog();
+      await clearActivityLog(taskBoardId);
     } catch (error) {
       throw new Error("Failed to clear all activity logs");
     }
@@ -78,14 +78,14 @@ const activitySlice = createSlice({
         state.status = "failed";
         state.error = action.error.message as string | null;;
       })
-      .addCase(fetchLogsByTypeAndId.pending, (state) => {
+      .addCase(fetchLogsByTaskBoardId.pending, (state) => {
         state.status = "loading";
       })
-      .addCase(fetchLogsByTypeAndId.fulfilled, (state, action) => {
+      .addCase(fetchLogsByTaskBoardId.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.activity = action.payload;
       })
-      .addCase(fetchLogsByTypeAndId.rejected, (state, action) => {
+      .addCase(fetchLogsByTaskBoardId.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message as string | null;
       })
@@ -94,7 +94,7 @@ const activitySlice = createSlice({
       })
       .addCase(logOneActivity.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.activity.push(action.payload); // Assuming the logged activity is added to the state
+        state.activity.push(action.payload); 
       })
       .addCase(logOneActivity.rejected, (state, action) => {
         state.status = "failed";
@@ -105,7 +105,7 @@ const activitySlice = createSlice({
       })
       .addCase(clearActivityLogs.fulfilled, (state) => {
         state.status = "succeeded";
-        state.activity = []; // Assuming the activity log state is cleared
+        state.activity = []; 
       })
       .addCase(clearActivityLogs.rejected, (state, action) => {
         state.status = "failed";

@@ -1,7 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { TaskBoard, TaskBoardsState } from "../types/types";
 import { RootState } from "../store/rootReducer";
-import { createTaskBoard, deleteTaskBoard, fetchTaskBoards, updateTaskBoard } from "../api/taskBoardsAPI";
+import {
+  createTaskBoard,
+  deleteTaskBoard,
+  fetchTaskBoards,
+  updateTaskBoard,
+} from "../api/taskBoardsAPI";
 
 const initialState: TaskBoardsState = {
   taskBoards: [],
@@ -35,7 +40,13 @@ export const createTaskBoardAsync = createAsyncThunk(
 
 export const updateTaskBoardAsync = createAsyncThunk(
   "taskBoards/updateTaskBoard",
-  async ({ taskBoardId, updatedBoard }: { taskBoardId: number, updatedBoard: string }) => {
+  async ({
+    taskBoardId,
+    updatedBoard,
+  }: {
+    taskBoardId: number;
+    updatedBoard: string;
+  }) => {
     try {
       await updateTaskBoard(taskBoardId, updatedBoard);
       return { taskBoardId, updatedBoard };
@@ -91,12 +102,11 @@ const taskBoardsSlice = createSlice({
       .addCase(updateTaskBoardAsync.fulfilled, (state, action) => {
         state.status = "succeeded";
         const { taskBoardId, updatedBoard } = action.payload;
-        const updatedTaskIndex = state.taskBoards.findIndex((taskBoard) => taskBoard.id === taskBoardId);
-        if (updatedTaskIndex !== -1) {
-          state.taskBoards[updatedTaskIndex].board = updatedBoard;
-          const updatedTask = state.taskBoards[updatedTaskIndex];
-          state.taskBoards.splice(updatedTaskIndex, 1); 
-          state.taskBoards.splice(updatedTaskIndex, 0, updatedTask); 
+        const updatedTaskBoard = state.taskBoards.find(
+          (taskBoard) => taskBoard.id === taskBoardId
+        );
+        if (updatedTaskBoard) {
+          updatedTaskBoard.board = updatedBoard;
         }
       })
       .addCase(updateTaskBoardAsync.rejected, (state, action) => {
@@ -108,7 +118,9 @@ const taskBoardsSlice = createSlice({
       })
       .addCase(deleteTaskBoardAsync.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.taskBoards = state.taskBoards.filter(taskBoard => taskBoard.id !== action.payload);
+        state.taskBoards = state.taskBoards.filter(
+          (taskBoard) => taskBoard.id !== action.payload
+        );
       })
       .addCase(deleteTaskBoardAsync.rejected, (state, action) => {
         state.status = "failed";
@@ -117,6 +129,7 @@ const taskBoardsSlice = createSlice({
   },
 });
 
-export const selectTaskBoards = (state: RootState) => state.taskBoards.taskBoards;
+export const selectTaskBoards = (state: RootState) =>
+  state.taskBoards.taskBoards;
 
 export default taskBoardsSlice.reducer;

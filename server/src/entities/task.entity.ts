@@ -25,7 +25,7 @@ export class TaskEntity {
   @Column({ type: 'enum', enum: Priority })
   priority: Priority;
 
-  @ManyToOne(() => TaskListEntity, taskList => taskList.tasks, { onDelete: 'CASCADE' })
+  @ManyToOne(() => TaskListEntity, taskList => taskList.tasks, { cascade: true, onDelete: 'CASCADE' })
   taskList: TaskListEntity;
 
   @Column()
@@ -36,7 +36,4 @@ export class TaskEntity {
 
   @Column()
   taskBoardId: number;
-
-  @Column()
-  taskBoard: string;
 }

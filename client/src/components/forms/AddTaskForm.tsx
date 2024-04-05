@@ -81,16 +81,17 @@ const AddTaskForm: React.FC<{
         ...formData,
         name: capitalizeFirstLetter(formData.name),
         taskListId: tasklist.id,
-        taskListTitle: tasklist.title
+        taskListTitle: tasklist.title,
+        taskBoardId: tasklist.taskBoardId
       })
     );
-    window.location.reload();
     setFormData({
       name: "",
       description: "",
       dueDate: "",
       priority: "",
     });
+    setAddModalOpen(false);
   };
 
   return (

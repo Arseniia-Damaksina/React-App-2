@@ -6,6 +6,7 @@ import {
   Body,
   Put,
   Delete,
+  ParseIntPipe,
   HttpStatus,
   HttpException,
 } from '@nestjs/common';
@@ -29,11 +30,13 @@ export class TaskListController {
     }
   }
 
-  @Get(':id')
-  async getOneTasklist(@Param('id') id: string): Promise<TaskListEntity> {
-    const taskListId = parseInt(id, 10);
+  @Get(':taskBoardId/:taskListId')
+  async getOneTasklist(
+    @Param('taskBoardId', ParseIntPipe) taskBoardId: number,
+    @Param('taskListId', ParseIntPipe) taskListId: number
+  ): Promise<TaskListEntity> {
     try {
-      return await this.taskListService.getOneTasklist(taskListId);
+      return await this.taskListService.getOneTasklist(taskListId, taskBoardId);
     } catch (error) {
       throw new HttpException(
         'Failed to fetch task list',
@@ -58,14 +61,14 @@ export class TaskListController {
     }
   }
 
-  @Put(':id/update')
+  @Put(':taskBoardId/:id/update')
   async updateTasklist(
-    @Param('id') id: string,
+    @Param('taskBoardId', ParseIntPipe) taskBoardId: number,
+    @Param('id', ParseIntPipe) id: number,
     @Body() updateTasklistDto: CreateTaskListDto,
   ): Promise<TaskListEntity> {
-    const taskListId = parseInt(id, 10);
     try {
-      const updatedTasklist = await this.taskListService.updateTasklist(taskListId, updateTasklistDto);
+      const updatedTasklist = await this.taskListService.updateTasklist(taskBoardId, id, updateTasklistDto);
       return updatedTasklist;
     } catch (error) {
       throw new HttpException(
@@ -75,11 +78,13 @@ export class TaskListController {
     }
   }
 
-  @Delete(':id/delete')
-  async deleteTasklist(@Param('id') id: string): Promise<void> {
-    const taskListId = parseInt(id, 10);
+  @Delete(':taskBoardId/:taskListId/delete')
+  async deleteTasklist(
+    @Param('taskBoardId', ParseIntPipe) taskBoardId: number,
+    @Param('taskListId', ParseIntPipe) taskListId: number,
+  ): Promise<void> {
     try {
-      await this.taskListService.deleteTasklist(taskListId);
+      await this.taskListService.deleteTasklist(taskBoardId, taskListId,);
     } catch (error) {
       throw new HttpException(
         'Failed to delete task list',

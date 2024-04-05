@@ -1,16 +1,32 @@
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
+import { selectActivity } from "../../slices/activitySlice";
 import { Activity } from "../../types/types";
 import { ClockIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import { clearActivityLogs } from "../../slices/activitySlice";
+import {
+  clearActivityLogs,
+  fetchLogsByTaskBoardId,
+} from "../../slices/activitySlice";
 import { useAppDispatch } from "../../store/store";
 
 const HistoryArea: React.FC<{
-  activityLogs: Activity[];
   setHistoryModal: React.Dispatch<React.SetStateAction<boolean>>;
-}> = ({ activityLogs, setHistoryModal }) => {
+}> = ({ setHistoryModal }) => {
+  const activityLogs: Activity[] = useSelector(selectActivity);
   const dispatch = useAppDispatch();
 
+  useEffect(() => {
+    dispatch(fetchLogsByTaskBoardId({ taskBoardId }));
+  }, [dispatch]);
+
+  const location = useLocation();
+  const currentPath = location.pathname;
+
+  const taskBoardId: number = parseInt(currentPath.split("/")[2], 10);
+
   const clearHistory = () => {
-    dispatch(clearActivityLogs());
+    dispatch(clearActivityLogs(taskBoardId));
   };
 
   return (
