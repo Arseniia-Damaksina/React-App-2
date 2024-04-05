@@ -11,13 +11,12 @@ export async function getAllActivityLogs(): Promise<AxiosResponse<Activity[]>> {
   }
 }
 
-export async function getLogsByTypeAndId(
-  type: string,
-  id: number
+export async function getLogsByTaskBoardId(
+  taskBoardId: number
 ): Promise<AxiosResponse<Activity[]>> {
   try {
     const response = await axios.get<Activity[]>(
-      `${API_BASE_URL}/activity/${type}/${id}`
+      `${API_BASE_URL}/activity/${taskBoardId}`
     );
     return response;
   } catch (error) {
@@ -39,9 +38,9 @@ export async function logActivity(
   }
 }
 
-export async function clearActivityLog(): Promise<void> {
+export async function clearActivityLog(taskBoardId: number): Promise<void> {
   try {
-    await axios.delete(`${API_BASE_URL}/activity`);
+    await axios.delete(`${API_BASE_URL}/activity/${taskBoardId}`);
   } catch (error) {
     throw new Error("Failed to clear activity log");
   }

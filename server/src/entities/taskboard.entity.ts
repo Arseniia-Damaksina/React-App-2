@@ -10,7 +10,7 @@ export class TaskBoardEntity {
     @Column()
     board: string;
 
-    @OneToOne(() => ActivityLogEntity, { onDelete: 'CASCADE' })
+    @OneToOne(() => ActivityLogEntity, { cascade: true, onDelete: 'CASCADE' })
     @JoinColumn()
     activityLog: ActivityLogEntity;
 

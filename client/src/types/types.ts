@@ -60,8 +60,8 @@ export interface TaskBoardsState {
 export interface Activity {
   id: number,
   actionType: string;
-  entityType: string;
-  entityTypeId: number;
+  taskId: number;
+  taskBoardId: number;
   createdAt: Date;
   log: {
     text: string,

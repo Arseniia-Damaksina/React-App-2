@@ -58,10 +58,10 @@ export class ActivityLogController {
     }
   }
 
-  @Delete()
-  async clearActivityLog(): Promise<void> {
+  @Delete(':taskBoardId/')
+  async deleteActivityLogByTaskBoardId(@Param('taskBoardId') taskBoardId: string): Promise<void> {
     try {
-      await this.activityLogService.clearActivityLog();
+      await this.activityLogService.deleteActivityLogByTaskBoardId(parseInt(taskBoardId, 10));
     } catch (error) {
       throw new HttpException(
         'Failed to clear activity log',

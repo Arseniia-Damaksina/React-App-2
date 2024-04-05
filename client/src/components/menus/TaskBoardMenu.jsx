@@ -11,12 +11,14 @@ import {
 } from "@heroicons/react/24/outline";
 import { useAppDispatch } from "../../store/store";
 import { deleteTaskBoardAsync } from "../../slices/taskBoardSlice";
+import { clearActivityLogs } from "../../slices/activitySlice";
 
 const TaskBoardMenu = ({ taskboard, onEdit }) => {
   const dispatch = useAppDispatch();
 
   const handleDeleteTaskBoard = (taskBoardId) => {
     dispatch(deleteTaskBoardAsync(taskBoardId));
+    dispatch(clearActivityLogs(taskBoardId));
   };
 
   return (
