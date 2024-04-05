@@ -3,7 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
-import configurations from 'src/configurations';
+import configurations from 'src/config';
 import { TaskListModule } from '../tasklist/tasklist.module';
 import { TaskModule } from '../task/task.module';
 import { TaskBoardModule } from '../taskboard/taskboard.module';
@@ -20,7 +20,11 @@ import { TaskBoardModule } from '../taskboard/taskboard.module';
       useFactory: (configService: ConfigService) => {
         return {
           type: 'postgres',
-          url: 'postgres://db_user:tikbQtRvsYiaFW3oLhx70ky09CLsneRc@dpg-co2ino821fec73au2c5g-a.frankfurt-postgres.render.com/tasklists?sslmode=no-verify',
+          host: configService.get('db_host'),
+          port: configService.get('db_port'),
+          username: configService.get('db_user'),
+          password: configService.get('db_password'),
+          database: configService.get('db'),
           autoLoadEntities: true,
           entities: [TaskBoardModule, TaskListModule, TaskModule],
           synchronize: true
