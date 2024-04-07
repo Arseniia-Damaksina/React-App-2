@@ -65,7 +65,7 @@ catch (error) {
       await this.taskBoardRepository.remove(taskboard);
       await this.activityLogService.deleteActivityLogByTaskBoardId(id);
   
-      return `Task list and associated activity logs have been successfully deleted.`;
+      return `Task board have been successfully deleted.`;
     } catch (error) {
       throw new Error('Failed to delete task board');
     }

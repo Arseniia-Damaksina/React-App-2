@@ -24,7 +24,7 @@ describe('TaskBoardController', () => {
     await app.close();
   });
 
-  it('should return 201 and taskboard object for POST /taskboards', async () => {
+  it('should create a new task board and return 201', async () => {
     const createTaskBoardDto = {
       board: 'New Task Board',
     };
@@ -32,7 +32,7 @@ describe('TaskBoardController', () => {
     const response = await request(app.getHttpServer())
       .post('/taskboards')
       .send(createTaskBoardDto);
-    expect(response.status).toBe(201);
+    expect(response.status).toBe(HttpStatus.CREATED);
     expect(response.body).toMatchObject({
       id: expect.any(Number),
       board: createTaskBoardDto.board,
@@ -41,9 +41,9 @@ describe('TaskBoardController', () => {
     createdTaskBoardId = response.body.id;
   });
 
-  it('should return 200 and array of taskboards for GET /taskboards', async () => {
+  it('should retrieve all task boards and return 200', async () => {
     const response = await request(app.getHttpServer()).get('/taskboards');
-    expect(response.status).toBe(200);
+    expect(response.status).toBe(HttpStatus.OK);
     if (Array.isArray(response.body)) {
       expect(response.body).toEqual(
         expect.arrayContaining([
@@ -58,29 +58,29 @@ describe('TaskBoardController', () => {
     }
   });
 
-  it('should return 200 and taskboard object for GET /taskboards/:id', async () => {
+  it('should retrieve a specific task board by ID and return 200', async () => {
     const taskBoardId = createdTaskBoardId;
 
     const response = await request(app.getHttpServer()).get(
       `/taskboards/${taskBoardId}`,
     );
-    expect(response.status).toBe(200);
+    expect(response.status).toBe(HttpStatus.OK);
     expect(response.body).toMatchObject({
       id: parseInt(taskBoardId, 10),
       board: expect.any(String),
     });
   });
 
-  it('should return 500 Internal Server Error for GET /taskboards/:nonexistentId', async () => {
+  it('should return 500 when retrieving a non-existent task board', async () => {
     const nonexistentId = 'nonexistent';
 
     const response = await request(app.getHttpServer()).get(
       `/taskboards/${nonexistentId}`,
     );
-    expect(response.status).toBe(500);
+    expect(response.status).toBe(HttpStatus.INTERNAL_SERVER_ERROR);
   });
 
-  it('should return 200 and updated taskboard object for PUT /taskboards/:id/update', async () => {
+  it('should update an existing task board and return 200', async () => {
     const taskBoardId = createdTaskBoardId;
     const updateTaskBoardDto = {
       board: 'Updated Task Board',
@@ -89,39 +89,42 @@ describe('TaskBoardController', () => {
     const response = await request(app.getHttpServer())
       .put(`/taskboards/${taskBoardId}/update`)
       .send(updateTaskBoardDto);
-    expect(response.status).toBe(200);
+      expect(response.status).toBe(HttpStatus.OK);
     expect(response.body).toMatchObject({
       id: taskBoardId,
       board: updateTaskBoardDto.board,
     });
   });
 
-  it('should return 404 Not Found for PUT /taskboards/:nonexistentId/update', async () => {
+  it('should return 404 when updating a non-existent task boarde', async () => {
     const nonexistentId = 'nonexistent';
 
     const response = await request(app.getHttpServer()).get(
       `/taskboards/${nonexistentId}/update`,
     );
-    expect(response.status).toBe(404);
+    expect(response.status).toBe(HttpStatus.NOT_FOUND);
   });
 
-  it('should return 200 and success message for DELETE /taskboards/:id/delete', async () => {
-    const taskBoardId = createdTaskBoardId;
-    const deletesuccessMessage = 'Task list has been successfully deleted.';
+  it('should delete an existing task board and return 200', async () => {
+    const deletesuccessMessage = 'Task board has been successfully deleted.';
 
     const response = await request(app.getHttpServer()).delete(
-      `/taskboards/${taskBoardId}/delete`,
+      `/taskboards/${createdTaskBoardId}/delete`,
     );
-    expect(response.status).toBe(200);
+    expect(response.status).toBe(HttpStatus.OK);
     expect(response.body.message).toEqual(deletesuccessMessage);
+    const getDeletedTaskBoard = await request(app.getHttpServer()).get(
+      `/taskboards/${createdTaskBoardId}`,
+    );
+    expect(getDeletedTaskBoard.status).toBe(HttpStatus.INTERNAL_SERVER_ERROR);
   });
 
-  it('should return 404 Not Found for DELETE /taskboards/:nonexistentId/delete', async () => {
+  it('should return 404 when deleting a non-existent task board', async () => {
     const nonexistentId = 'nonexistent';
 
     const response = await request(app.getHttpServer()).get(
       `/taskboards/${nonexistentId}/delete`,
     );
-    expect(response.status).toBe(404);
+    expect(response.status).toBe(HttpStatus.NOT_FOUND);
   });
 });

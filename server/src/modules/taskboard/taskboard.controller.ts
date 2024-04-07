@@ -89,7 +89,7 @@ export class TaskBoardController {
     const taskBoardId = parseInt(id, 10);
     try {
       await this.taskBoardService.deleteTaskboard(taskBoardId);
-      const successDeleteMessage = 'Task list has been successfully deleted.';
+      const successDeleteMessage = 'Task board has been successfully deleted.';
       return { message: successDeleteMessage };
     } catch (error) {
       throw new HttpException(
