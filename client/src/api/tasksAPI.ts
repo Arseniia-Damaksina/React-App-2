@@ -3,8 +3,6 @@ import { TaskInterface, addTask } from '../types/types';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-console.log(API_BASE_URL)
-
 export const fetchTasks = async (): Promise<AxiosResponse<TaskInterface[]>> => {
   try {
     const response = await axios.get<TaskInterface[]>(`${API_BASE_URL}/tasks`);
