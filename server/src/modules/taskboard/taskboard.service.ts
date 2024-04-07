@@ -1,15 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { TaskBoardEntity } from 'src/entities/taskboard.entity';
-import { CreateTaskBoardDto } from 'src/DTOs/create-taskboard.dto';
-import formatDate from 'src/utils/formatDate';
+import { TaskBoardEntity } from '../../entities/taskboard.entity';
+import { ActivityLogService } from '../activityLog/activityLog.service';
+import { CreateTaskBoardDto } from '../../DTOs/create-taskboard.dto';
+import formatDate from '../../utils/formatDate';
 
 @Injectable()
 export class TaskBoardService {
   constructor(
     @InjectRepository(TaskBoardEntity)
     private readonly taskBoardRepository: Repository<TaskBoardEntity>,
+    private readonly activityLogService: ActivityLogService,
   ) {}
 
   async getAllTaskboards(): Promise<TaskBoardEntity[]> {
@@ -23,7 +25,8 @@ export class TaskBoardService {
   async getOneTaskboard(id: number): Promise<TaskBoardEntity> {
     try {
       return await this.taskBoardRepository.findOne({ where: { id } });
-    } catch (error) {
+    }
+catch (error) {
       throw new Error('Failed to fetch task board');
     }
   }
@@ -60,8 +63,9 @@ export class TaskBoardService {
     try {
       const taskboard = await this.getOneTaskboard(id);
       await this.taskBoardRepository.remove(taskboard);
-
-      return `Task list ${taskboard.board} has been successfully deleted.`;
+      await this.activityLogService.deleteActivityLogByTaskBoardId(id);
+  
+      return `Task board have been successfully deleted.`;
     } catch (error) {
       throw new Error('Failed to delete task board');
     }

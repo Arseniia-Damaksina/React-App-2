@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
-import { capitalizeString } from "../utils/utilFunctions";
+import { ToastContainer } from "react-toastify";
+import { capitalizeString, showToastError } from "../utils/utilFunctions";
 import Header from "../components/ui/Header";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../store/store";
@@ -55,15 +55,7 @@ const TaskBoards: React.FC = () => {
   ) => {
     e.preventDefault();
     if (!updatedBoard.trim()) {
-      toast.error("Task board name cannot be empty", {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        theme: "colored",
-      });
+      showToastError("Task board name cannot be empty");
       return;
     }
     dispatch(
@@ -80,7 +72,9 @@ const TaskBoards: React.FC = () => {
     <div>
       <Header />
       <div className="flex flex-col items-center">
-        <h1 className="text-3xl font-bold my-5 text-center">Choose Your Task Board</h1>
+        <h1 className="text-3xl font-bold my-5 text-center">
+          Choose Your Task Board
+        </h1>
         <div className="flex flex-col items-center">
           <AddTaskBoardButton />
           {taskboards.map((taskboard) => {

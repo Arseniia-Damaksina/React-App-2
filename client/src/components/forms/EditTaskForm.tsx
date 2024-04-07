@@ -3,17 +3,19 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useAppDispatch } from "../../store/store";
 import { fetchTasksAsync, updateTaskAsync } from "../../slices/taskSlice";
 import { addTask, FormData, TaskInterface } from "../../types/types";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { capitalizeFirstLetter } from "../../utils/utilFunctions";
+import {
+  capitalizeFirstLetter,
+  showToastError,
+} from "../../utils/utilFunctions";
 
 const EditTaskForm: React.FC<{
   task: TaskInterface;
   setEditModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }> = ({ task, setEditModalOpen }) => {
-
   const dispatch = useAppDispatch();
-  
+
   const [formData, setFormData] = useState<FormData>({
     name: task.name,
     description: task.description,
@@ -39,55 +41,33 @@ const EditTaskForm: React.FC<{
     name: capitalizeFirstLetter(formData.name),
     taskListId: task.taskListId,
     taskListTitle: task.taskListTitle,
-    taskBoardId: task.taskBoardId
+    taskBoardId: task.taskBoardId,
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!formData.name.trim()) {
-      toast.error("Task list cannot be empty", {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        theme: "colored",
-      });
+      showToastError("Task list cannot be empty");
       return;
     }
 
     const currentDate = new Date();
     const selectedDate = new Date(formData.dueDate);
     if (!formData.dueDate || selectedDate < currentDate) {
-      toast.error("Please, select the valid date", {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        theme: "colored",
-      });
+      showToastError("Please, select the valid date");
       return;
     }
 
     if (!["Low", "Medium", "High"].includes(formData.priority)) {
-      toast.error("Please, choose the priority", {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        theme: "colored",
-      });
+      showToastError("Please, choose the priority");
       return;
     }
 
-    await dispatch(updateTaskAsync({ taskId: task.id, updatedTask: taskToUpdate }))
-    await dispatch(fetchTasksAsync())
+    await dispatch(
+      updateTaskAsync({ taskId: task.id, updatedTask: taskToUpdate })
+    );
+    await dispatch(fetchTasksAsync());
     setFormData({
       name: "",
       description: "",

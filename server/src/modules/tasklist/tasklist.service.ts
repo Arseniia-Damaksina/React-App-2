@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { TaskListEntity } from 'src/entities/tasklist.entity';
-import { CreateTaskListDto } from 'src/DTOs/create-tasklist.dto';
-import { ActivityLogService } from 'src/modules/activityLog/activityLog.service';
-import formatDate from 'src/utils/formatDate';
+import { TaskListEntity } from '../../entities/tasklist.entity';
+import { CreateTaskListDto } from '../../DTOs/create-tasklist.dto';
+import { ActivityLogService } from '../../modules/activityLog/activityLog.service';
+import formatDate from '../../utils/formatDate';
 
 @Injectable()
 export class TaskListService {

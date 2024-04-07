@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { ActivityLogEntity } from 'src/entities/activityLog.entity';
-import { CreateActivityLogDto } from 'src/DTOs/create-activityLog.dto';
+import { ActivityLogEntity } from '../../entities/activityLog.entity';
+import { CreateActivityLogDto } from '../../DTOs/create-activityLog.dto';
 
 @Injectable()
 export class ActivityLogService {

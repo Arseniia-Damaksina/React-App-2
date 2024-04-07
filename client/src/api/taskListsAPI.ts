@@ -1,6 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 import { TaskList } from '../types/types';
-import { API_BASE_URL } from '../utils/url';
+
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export const fetchTaskLists = async (): Promise<AxiosResponse<TaskList[]>> => {
   try {

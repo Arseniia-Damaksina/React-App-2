@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { TaskEntity } from 'src/entities/task.entity';
-import { CreateTaskDto } from 'src/DTOs/create-task.dto';
-import { ActivityLogService } from 'src/modules/activityLog/activityLog.service';
-import formatDate from 'src/utils/formatDate';
+import { TaskEntity } from '../../entities/task.entity';
+import { CreateTaskDto } from '../../DTOs/create-task.dto';
+import { ActivityLogService } from '../activityLog/activityLog.service';
+import formatDate from '../../utils/formatDate';
 
 const taskActions = {
   CREATE_TASK: 'CREATE_TASK',

@@ -40,7 +40,7 @@ const HistoryArea: React.FC<{
               onClick={clearHistory}
             >
               <ClockIcon className="w-5 h-5 mr-1" />
-              Clear History
+              <span className="hidden sm:inline">Clear History</span>
             </button>
           )}
           <button
@@ -50,7 +50,7 @@ const HistoryArea: React.FC<{
             }}
           >
             <XMarkIcon className="w-5 h-5 mr-1" />
-            Close
+            <span className="hidden sm:inline">Close</span>
           </button>
         </div>
       </div>

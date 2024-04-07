@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { PlusIcon } from "@heroicons/react/24/outline";
 import { useAppDispatch } from "../../store/store";
 import { createTaskBoardAsync } from "../../slices/taskBoardSlice";
-import { capitalizeString } from "../../utils/utilFunctions";
-import { ToastContainer, toast } from "react-toastify";
+import { capitalizeString, showToastError } from "../../utils/utilFunctions";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const AddTasklistButton: React.FC = () => {
@@ -18,15 +18,7 @@ const AddTasklistButton: React.FC = () => {
   const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!newTaskBoard.trim()) {
-      toast.error("Task board name cannot be empty", {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        theme: "colored",
-      });
+      showToastError("Task board name cannot be empty");
       return;
     }
     dispatch(createTaskBoardAsync(capitalizeString(newTaskBoard)));

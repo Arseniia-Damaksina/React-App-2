@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ActivityLogEntity } from 'src/entities/activityLog.entity';
+import { ActivityLogEntity } from '../../entities/activityLog.entity';
 import { ActivityLogController } from './activityLog.controller';
 import { ActivityLogService } from './activityLog.service';
 

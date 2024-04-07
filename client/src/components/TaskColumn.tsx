@@ -10,9 +10,9 @@ import AddTaskForm from "./forms/AddTaskForm";
 import { updateTaskListAsync, selectTaskLists } from "../slices/taskListSlice";
 import { fetchTasksAsync, selectTasks } from "../slices/taskSlice";
 import Modal from "./ui/Modal";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { capitalizeString } from "../utils/utilFunctions";
+import { capitalizeString, showToastError } from "../utils/utilFunctions";
 
 const TaskColumn: React.FC<{ tasklist: TaskList, taskBoardId: number }> = ({ tasklist, taskBoardId }) => {
   const dispatch = useAppDispatch();
@@ -44,15 +44,7 @@ const TaskColumn: React.FC<{ tasklist: TaskList, taskBoardId: number }> = ({ tas
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!updatedTaskList.trim()) {
-      toast.error("Task list cannot be empty", {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        theme: "colored",
-      });
+      showToastError("Task list cannot be empty");
       return;
     }
     dispatch(
@@ -100,7 +92,7 @@ const TaskColumn: React.FC<{ tasklist: TaskList, taskBoardId: number }> = ({ tas
                   />
                   <button
                     type="submit"
-                    className="px-2 py-1 mt-2 mr-2 rounded-lg bg-secondary text-white"
+                    className="px-2 py-1 mt-2 mr-2 rounded-lg border border-secondary bg-secondary text-white"
                   >
                     Edit
                   </button>

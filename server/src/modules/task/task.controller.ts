@@ -1,7 +1,18 @@
-import { Controller, Get, Post, Body, Param, Put, Delete, HttpStatus, HttpException } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Put,
+  Delete,
+  HttpStatus,
+  HttpException,
+  NotFoundException,
+} from '@nestjs/common';
 import { TaskService } from './task.service';
-import { TaskEntity } from 'src/entities/task.entity';
-import { CreateTaskDto } from 'src/DTOs/create-task.dto';
+import { TaskEntity } from '../../entities/task.entity';
+import { CreateTaskDto } from '../../DTOs/create-task.dto';
 
 @Controller('tasks')
 export class TaskController {
@@ -23,7 +34,11 @@ export class TaskController {
   async getOneTask(@Param('id') id: string): Promise<TaskEntity> {
     const taskId = parseInt(id, 10);
     try {
-      return await this.taskService.getOneTask(taskId);
+      const task = await this.taskService.getOneTask(taskId);
+      if (!task) {
+        throw new NotFoundException(`Task with ID ${id} not found`);
+      }
+      return task;
     } catch (error) {
       throw new HttpException(
         'Failed to fetch task',
@@ -46,10 +61,16 @@ export class TaskController {
   }
 
   @Put(':id/update')
-  async updateTask(@Param('id') id: string, @Body() updateTaskDto: CreateTaskDto): Promise<TaskEntity> {
+  async updateTask(
+    @Param('id') id: string,
+    @Body() updateTaskDto: CreateTaskDto,
+  ): Promise<TaskEntity> {
     const taskId = parseInt(id, 10);
     try {
-      const updatedTask = await this.taskService.updateTask(taskId, updateTaskDto);
+      const updatedTask = await this.taskService.updateTask(
+        taskId,
+        updateTaskDto,
+      );
       return updatedTask;
     } catch (error) {
       throw new HttpException(

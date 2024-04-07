@@ -3,10 +3,11 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
-import configurations from 'src/config';
+import configurations from '../../config';
 import { TaskListModule } from '../tasklist/tasklist.module';
 import { TaskModule } from '../task/task.module';
 import { TaskBoardModule } from '../taskboard/taskboard.module';
+import { ActivityLogModule } from '../activityLog/activityLog.module';
 
 @Module({
   imports: [
@@ -26,12 +27,12 @@ import { TaskBoardModule } from '../taskboard/taskboard.module';
           password: configService.get('db_password'),
           database: configService.get('db'),
           autoLoadEntities: true,
-          entities: [TaskBoardModule, TaskListModule, TaskModule],
+          entities: [__dirname + '/**/*.entity{.ts,.js}'],
           synchronize: true
         };
       },
     }),
-    TaskBoardModule, TaskListModule, TaskModule
+    TaskBoardModule, TaskListModule, TaskModule, ActivityLogModule
   ],
   controllers: [AppController],
   providers: [AppService],
