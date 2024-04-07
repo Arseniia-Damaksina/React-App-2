@@ -23,7 +23,7 @@ const HistoryButton: React.FC = () => {
       )}
       <button
         onClick={handleToggleHistory}
-        className="flex justify-center items-center p-3 mx-6 border-2 border-secondary rounded-lg bg-white shadow-lg"
+        className="flex justify-center items-center p-3 mx-6 border border-secondary rounded-lg bg-white shadow-lg"
       >
         <ClockIcon className="w-5 h-5 text-secondary" />
         <span className="hidden sm:inline text-secondary font-semibold ml-1">
