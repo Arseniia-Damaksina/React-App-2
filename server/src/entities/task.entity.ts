@@ -6,7 +6,7 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { TaskListEntity } from './tasklist.entity';
-import { Priority } from 'src/enums/priority.enum';
+import { Priority } from '../enums/priority.enum';
 
 @Entity()
 export class TaskEntity {

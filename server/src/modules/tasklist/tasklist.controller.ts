@@ -9,10 +9,11 @@ import {
   ParseIntPipe,
   HttpStatus,
   HttpException,
+  NotFoundException
 } from '@nestjs/common';
 import { TaskListService } from './tasklist.service';
-import { TaskListEntity } from 'src/entities/tasklist.entity';
-import { CreateTaskListDto } from 'src/DTOs/create-tasklist.dto';
+import { TaskListEntity } from '../../entities/tasklist.entity';
+import { CreateTaskListDto } from '../../DTOs/create-tasklist.dto';
 
 @Controller('tasklists')
 export class TaskListController {
@@ -36,7 +37,11 @@ export class TaskListController {
     @Param('taskListId', ParseIntPipe) taskListId: number
   ): Promise<TaskListEntity> {
     try {
-      return await this.taskListService.getOneTasklist(taskListId, taskBoardId);
+      const taskList = await this.taskListService.getOneTasklist(taskListId, taskBoardId);
+      if (!taskList) {
+        throw new NotFoundException(`Task list with ID ${taskListId} not found`);
+      }
+      return taskList;
     } catch (error) {
       throw new HttpException(
         'Failed to fetch task list',

@@ -1,14 +1,17 @@
-import { IsString, IsEnum, IsNumber } from 'class-validator';
-import { Priority } from 'src/enums/priority.enum';
+import { IsString, IsEnum, IsNumber, IsNotEmpty } from 'class-validator';
+import { Priority } from '../enums/priority.enum';
 
 export class CreateTaskDto {
   @IsString()
+  @IsNotEmpty()
   name: string;
 
   @IsString()
+  @IsNotEmpty()
   description: string;
 
   @IsString()
+  @IsNotEmpty()
   dueDate: string;
 
   @IsEnum(Priority)
@@ -21,6 +24,7 @@ export class CreateTaskDto {
   taskBoardId: number;
 
   @IsString()
+  @IsNotEmpty()
   taskListTitle: string;
 }
 

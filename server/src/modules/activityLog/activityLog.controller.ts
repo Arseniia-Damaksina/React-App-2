@@ -10,8 +10,8 @@ import {
   HttpException,
 } from '@nestjs/common';
 import { ActivityLogService } from './activityLog.service';
-import { ActivityLogEntity } from 'src/entities/activityLog.entity';
-import { CreateActivityLogDto } from 'src/DTOs/create-activityLog.dto';
+import { ActivityLogEntity } from '../../entities/activityLog.entity';
+import { CreateActivityLogDto } from '../../DTOs/create-activityLog.dto';
 
 @Controller('activity')
 export class ActivityLogController {
