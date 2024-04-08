@@ -9,7 +9,9 @@ interface AddTaskBoardFormProps {
   setTaskBoardForm: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const AddTaskBoardForm: React.FC<AddTaskBoardFormProps> = ({ setTaskBoardForm }) => {
+const AddTaskBoardForm: React.FC<AddTaskBoardFormProps> = ({
+  setTaskBoardForm,
+}) => {
   const dispatch = useAppDispatch();
   const [newTaskBoard, setNewTaskBoard] = useState<string>("");
 
@@ -28,20 +30,34 @@ const AddTaskBoardForm: React.FC<AddTaskBoardFormProps> = ({ setTaskBoardForm })
     setTaskBoardForm(false);
   };
 
-  const handleHideButtonClick: React.MouseEventHandler<HTMLButtonElement> = () => {
+  const handleHideButtonClick: React.MouseEventHandler<
+    HTMLButtonElement
+  > = () => {
     setTaskBoardForm(false);
   };
 
   return (
-    <form onSubmit={handleFormSubmit} className="flex flex-col w-full mb-3">
-      <TaskBoardInput value={newTaskBoard} onChange={handleInputChange} placeholder="Add your task board" />
+    <form
+      onSubmit={handleFormSubmit}
+      className="flex flex-col w-full mb-3"
+      data-testid="add-task-board-form"
+    >
+      <TaskBoardInput
+        value={newTaskBoard}
+        onChange={handleInputChange}
+        placeholder="Add your task board"
+      />
       <div className="flex justify-between w-full">
-        <button type="submit" className="w-1/2 p-3 mt-2 rounded-lg bg-tertiary text-white">
+        <button
+          type="submit"
+          className="w-1/2 p-3 mt-2 rounded-lg bg-tertiary text-white"
+        >
           Create
         </button>
         <button
           className="w-1/2 px-2 mt-2 ml-2 rounded-lg bg-white text-secondary shadow-lg border border-secondary"
           onClick={handleHideButtonClick}
+          data-testid="add-task-board-form-hide"
         >
           Hide
         </button>

@@ -5,13 +5,18 @@ interface AddTaskBoardButtonProps {
   setTaskBoardForm: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const AddTaskBoardButton: React.FC<AddTaskBoardButtonProps> = ({ setTaskBoardForm }) => {
-  const handleAddBoardButtonClick: React.MouseEventHandler<HTMLButtonElement> = () => {
+const AddTaskBoardButton: React.FC<AddTaskBoardButtonProps> = ({
+  setTaskBoardForm,
+}) => {
+  const handleAddBoardButtonClick: React.MouseEventHandler<
+    HTMLButtonElement
+  > = () => {
     setTaskBoardForm(true);
   };
 
   return (
     <button
+      data-testid="add-task-board-button"
       className="w-64 flex justify-center items-center p-3 mb-3 border-2 border-secondary rounded-lg bg-white font-bold text-xl shadow-lg"
       onClick={handleAddBoardButtonClick}
     >
