@@ -1,29 +1,22 @@
 import React, { useEffect, useState } from "react";
-import { ToastContainer } from "react-toastify";
-import { capitalizeString, showToastError } from "../utils/utilFunctions";
-import Header from "../components/ui/Header";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch } from "../store/store";
+import { useAppDispatch } from "../store/store";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { selectTaskBoards } from "../slices/taskBoardSlice";
-import {
-  fetchTaskBoardsAsync,
-  updateTaskBoardAsync,
-} from "../slices/taskBoardSlice";
-// @ts-ignore
-import TaskBoardMenu from "../components/menus/TaskBoardMenu";
-import AddTaskBoardButton from "../components/buttons/AddTaskBoardButton";
+import { fetchTaskBoardsAsync } from "../slices/taskBoardSlice";
+import AddTaskBoard from "../components/AddTaskBoard";
+import TaskBoardButton from "../components/buttons/TaskBoardButton";
+import EditTaskBoardForm from "../components/forms/EditTaskBoardForm";
+import Header from "../components/Header";
 
 const TaskBoards: React.FC = () => {
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
   const taskboards = useSelector(selectTaskBoards);
   const navigate = useNavigate();
 
   const [updatedBoard, setUpdatedBoard] = useState<string>("");
   const [taskBoardForm, setTaskBoardForm] = useState<boolean>(false);
-  const [selectedTaskBoardId, setSelectedTaskBoardId] = useState<number | null>(
-    null
-  );
+  const [selectedTaskBoardId, setSelectedTaskBoardId] = useState<number | null>(null);
 
   useEffect(() => {
     dispatch(fetchTaskBoardsAsync());
@@ -39,93 +32,35 @@ const TaskBoards: React.FC = () => {
     setUpdatedBoard(board);
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setUpdatedBoard(e.target.value);
-  };
-
-  const handleHideButtonClick: React.MouseEventHandler<
-    HTMLButtonElement
-  > = () => {
-    setTaskBoardForm(false);
-  };
-
-  const handleFormSubmit = (
-    e: React.FormEvent<HTMLFormElement>,
-    id: number
-  ) => {
-    e.preventDefault();
-    if (!updatedBoard.trim()) {
-      showToastError("Task board name cannot be empty");
-      return;
-    }
-    dispatch(
-      updateTaskBoardAsync({
-        taskBoardId: id,
-        updatedBoard: capitalizeString(updatedBoard),
-      })
-    );
-    setUpdatedBoard("");
-    setTaskBoardForm(false);
-  };
-
   return (
     <div>
       <Header />
       <div className="flex flex-col items-center">
-        <h1 className="text-3xl font-bold my-5 text-center">
-          Choose Your Task Board
-        </h1>
+        <h1 className="text-3xl font-bold my-5 text-center">Choose Your Task Board</h1>
         <div className="flex flex-col items-center">
-          <AddTaskBoardButton />
+          <AddTaskBoard />
           {taskboards.map((taskboard) => {
             return (
               <React.Fragment key={taskboard.id}>
                 {taskBoardForm && selectedTaskBoardId === taskboard.id ? (
-                  <form
-                    onSubmit={(e) => handleFormSubmit(e, taskboard.id)}
-                    className="flex flex-col w-full mb-3"
-                  >
-                    <input
-                      type="text"
-                      value={updatedBoard}
-                      onChange={handleInputChange}
-                      placeholder="Add your task board"
-                      className="border-2 border-secondary rounded-lg p-3 bg-white shadow-lg"
-                    />
-                    <div className="flex justify-between w-full">
-                      <button
-                        type="submit"
-                        className="w-1/2 p-3 mt-2 rounded-lg bg-tertiary text-white"
-                      >
-                        Edit
-                      </button>
-                      <button
-                        className="w-1/2 px-2 mt-2 ml-2 rounded-lg bg-white text-secondary shadow-lg border border-secondary"
-                        onClick={handleHideButtonClick}
-                      >
-                        Hide
-                      </button>
-                    </div>
-                  </form>
+                  <EditTaskBoardForm
+                    updatedBoard={updatedBoard}
+                    setUpdatedBoard={setUpdatedBoard}
+                    setTaskBoardForm={setTaskBoardForm}
+                    selectedTaskBoardId={taskboard.id}
+                  />
                 ) : (
-                  <button
-                    key={taskboard.id}
-                    className="w-64 p-3 mb-3 rounded-lg bg-secondary text-white text-xl font-bold flex justify-between items-center"
-                    onClick={() => handleNavigate(taskboard.id)}
-                  >
-                    <p>{capitalizeString(taskboard.board)}</p>
-                    <TaskBoardMenu
-                      taskboard={taskboard}
-                      onEdit={handleEditForm}
-                    />
-                  </button>
+                  <TaskBoardButton
+                    taskboard={taskboard}
+                    onEdit={handleEditForm}
+                    onNavigate={handleNavigate}
+                  />
                 )}
               </React.Fragment>
             );
           })}
         </div>
       </div>
-      <ToastContainer />
     </div>
   );
 };

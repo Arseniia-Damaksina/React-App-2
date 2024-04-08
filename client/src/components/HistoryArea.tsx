@@ -1,14 +1,14 @@
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
-import { selectActivity } from "../../slices/activitySlice";
-import { Activity } from "../../types/types";
+import { selectActivity } from "../slices/activitySlice";
+import { Activity } from "../types/types";
 import { ClockIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import {
   clearActivityLogs,
   fetchLogsByTaskBoardId,
-} from "../../slices/activitySlice";
-import { useAppDispatch } from "../../store/store";
+} from "../slices/activitySlice";
+import { useAppDispatch } from "../store/store";
 
 const HistoryArea: React.FC<{
   setHistoryModal: React.Dispatch<React.SetStateAction<boolean>>;

@@ -85,3 +85,7 @@ export interface onClickButtonProps {
   onClick: React.MouseEventHandler<HTMLButtonElement>
   text?: string
 }
+
+export interface setStateProps {
+  setState: React.Dispatch<React.SetStateAction<boolean>>;
+}

@@ -1,11 +1,11 @@
 import React, {useEffect} from "react";
 import { useLocation } from "react-router-dom";
-import logo from "../../assets/tudu.png";
+import logo from "../assets/tudu.png";
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch } from "../../store/store";
-import AddTasklistButton from "../buttons/AddTasklistButton";
-import HistoryButton from "../buttons/HistoryButton";
-import { selectTaskBoards, fetchTaskBoardsAsync } from "../../slices/taskBoardSlice";
+import { AppDispatch } from "../store/store";
+import AddTaskList from "./AddTaskList";
+import History from "./History";
+import { selectTaskBoards, fetchTaskBoardsAsync } from "../slices/taskBoardSlice";
 
 const Header: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -39,8 +39,8 @@ const Header: React.FC = () => {
       <div className="flex">
         {headerTitle !== "Task Boards" && (
           <>
-            <HistoryButton />
-            <AddTasklistButton taskBoardId={taskBoardId}/>
+            <History />
+            <AddTaskList taskBoardId={taskBoardId}/>
           </>
         )}
       </div>

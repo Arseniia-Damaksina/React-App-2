@@ -16,7 +16,7 @@ export class TaskBoardService {
 
   async getAllTaskboards(): Promise<TaskBoardEntity[]> {
     try {
-      return await this.taskBoardRepository.find();
+      return await this.taskBoardRepository.find({ order: { id: 'ASC' }});
     } catch (error) {
       throw new Error('Failed to fetch all task boards');
     }
@@ -49,11 +49,14 @@ catch (error) {
 
   async updateTaskboard(id: number, updateTaskboardDto: CreateTaskBoardDto): Promise<TaskBoardEntity> {
     try {
-      const taskboard = await this.getOneTaskboard(id);
-      taskboard.board = updateTaskboardDto.board;
-      const updatedTaskboard = await this.taskBoardRepository.save(taskboard);
-
-      return updatedTaskboard;
+      const taskboard = await this.taskBoardRepository.findOne({ where: { id } });
+      if (taskboard) {
+        taskboard.board = updateTaskboardDto.board;
+        const updatedTaskboard = await this.taskBoardRepository.save(taskboard);
+        return updatedTaskboard;
+      } else {
+        throw new Error('Task board not found');
+      }
     } catch (error) {
       throw new Error('Failed to update task board');
     }

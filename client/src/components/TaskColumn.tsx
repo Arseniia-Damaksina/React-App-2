@@ -4,28 +4,30 @@ import { useAppDispatch } from "../store/store";
 import { TaskList } from "../types/types";
 // @ts-ignore
 import TaskListMenu from "./menus/TaskListMenu";
+import EditTaskListForm from "./forms/EditTaskListForm";
 import Task from "./Task";
-import AddButton from "./buttons/AddButton";
+import AddButton from "./buttons/AddTaskButton";
 import AddTaskForm from "./forms/AddTaskForm";
-import { updateTaskListAsync, selectTaskLists } from "../slices/taskListSlice";
+import { selectTaskLists } from "../slices/taskListSlice";
 import { fetchTasksAsync, selectTasks } from "../slices/taskSlice";
 import Modal from "./ui/Modal";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { capitalizeString, showToastError } from "../utils/utilFunctions";
 
-const TaskColumn: React.FC<{ tasklist: TaskList, taskBoardId: number }> = ({ tasklist, taskBoardId }) => {
+const TaskColumn: React.FC<{ tasklist: TaskList; taskBoardId: number }> = ({
+  tasklist,
+  taskBoardId,
+}) => {
   const dispatch = useAppDispatch();
   const tasks = useSelector(selectTasks);
   const tasklists = useSelector(selectTaskLists);
 
-  const selectOptions = tasklists.filter((tasklist) => tasklist.taskBoardId === taskBoardId);
+  const selectOptions = tasklists.filter(
+    (tasklist) => tasklist.taskBoardId === taskBoardId
+  );
 
   const [open, setOpen] = React.useState<number | null>(null);
   const [addModalOpen, setAddModalOpen] = React.useState<boolean>(false);
-  const [updatedTaskList, setUpdatedTaskList] = React.useState<string>(
-    tasklist.title
-  );
   const [updateForm, setUpdateForm] = React.useState<boolean>(false);
 
   useEffect(() => {
@@ -33,40 +35,13 @@ const TaskColumn: React.FC<{ tasklist: TaskList, taskBoardId: number }> = ({ tas
   }, [dispatch]);
 
   const tasksByCategory = tasks.filter(
-    (task) => task.taskListTitle === tasklist.title && task.taskBoardId === tasklist.taskBoardId
+    (task) =>
+      task.taskListTitle === tasklist.title &&
+      task.taskBoardId === tasklist.taskBoardId
   );
-
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setUpdatedTaskList(e.target.value);
-  };
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (!updatedTaskList.trim()) {
-      showToastError("Task list cannot be empty");
-      return;
-    }
-    dispatch(
-      updateTaskListAsync({
-        taskBoardId,
-        taskListId: tasklist.id,
-        updatedTitle: capitalizeString(updatedTaskList),
-      })
-    ).then(() => {
-      dispatch(fetchTasksAsync());
-    });
-    setUpdateForm(false);
-  };
 
   const handleButtonClick: React.MouseEventHandler<HTMLButtonElement> = () => {
     setUpdateForm(true);
-  };
-
-  const handleHideButtonClick: React.MouseEventHandler<
-    HTMLButtonElement
-  > = () => {
-    setUpdateForm(false);
   };
 
   return (
@@ -82,27 +57,11 @@ const TaskColumn: React.FC<{ tasklist: TaskList, taskBoardId: number }> = ({ tas
           <>
             <div className="flex justify-between py-4 pl-3 pr-2 rounded-lg bg-tertiary">
               {updateForm ? (
-                <form onSubmit={handleSubmit} className="mr-2">
-                  <input
-                    type="text"
-                    value={updatedTaskList}
-                    onChange={handleChange}
-                    placeholder="Edit your tasklist"
-                    className="rounded-lg p-2"
-                  />
-                  <button
-                    type="submit"
-                    className="px-2 py-1 mt-2 mr-2 rounded-lg border border-secondary bg-secondary text-white"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onClick={handleHideButtonClick}
-                    className="px-2 py-1 rounded-lg bg-white text-secondary shadow-lg border border-secondary"
-                  >
-                    Hide
-                  </button>
-                </form>
+                <EditTaskListForm
+                  tasklist={tasklist}
+                  taskBoardId={taskBoardId}
+                  setUpdateForm={setUpdateForm}
+                />
               ) : (
                 <p className="font-bold">{tasklist.title}</p>
               )}
@@ -112,11 +71,14 @@ const TaskColumn: React.FC<{ tasklist: TaskList, taskBoardId: number }> = ({ tas
                   id={tasklist.id}
                   taskBoardId={taskBoardId}
                   onClick={handleButtonClick}
-                  setAddModalOpen={setAddModalOpen}                 
+                  setAddModalOpen={setAddModalOpen}
                 />
               </div>
             </div>
-            <AddButton text={"Add New Task"} onClick={() => setAddModalOpen(true)} />
+            <AddButton
+              text={"Add New Task"}
+              onClick={() => setAddModalOpen(true)}
+            />
             <div>
               {tasksByCategory.map((task) => {
                 return (
@@ -157,7 +119,6 @@ const TaskColumn: React.FC<{ tasklist: TaskList, taskBoardId: number }> = ({ tas
               })}
             </div>
           </>
-
         )}
         <ToastContainer />
       </div>
