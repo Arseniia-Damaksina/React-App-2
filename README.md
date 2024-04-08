@@ -8,18 +8,14 @@
 - Navigate to the server directory and install dependencies:
 
 ```bash
+cd React-App-2
 cd server
 npm install
 ```
-- To setup the database using Docker run
 
-```bash
-docker compose up -d
-```
-
-3. **Configure Backend:**
 - Rename file ```.env.example``` to ```.env``` and fill in the credentials to access the database.
 - You can use this:
+
 ```bash
 PORT=3000
 DB_HOST=localhost
@@ -28,6 +24,13 @@ DB_USER=postgres
 DB_PASSWORD=password
 DB=taskboards
 ```
+- To setup the database using Docker run
+
+```bash
+docker compose up -d
+```
+
+3. **Backend:**
 - Run the backend local server:
 
 ```bash
