@@ -3,6 +3,7 @@ import { useAppDispatch } from "../../store/store";
 import { updateTaskBoardAsync } from "../../slices/taskBoardSlice";
 import { capitalizeString, showToastError } from "../../utils/utilFunctions";
 import { ToastContainer } from "react-toastify";
+import TaskBoardInput from "./inputs/TaskBoardInput";
 
 interface EditTaskBoardFormProps {
   updatedBoard: string;
@@ -18,10 +19,6 @@ const EditTaskBoardForm: React.FC<EditTaskBoardFormProps> = ({
   selectedTaskBoardId,
 }) => {
   const dispatch = useAppDispatch();
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setUpdatedBoard(e.target.value);
-  };
 
   const handleHideButtonClick: React.MouseEventHandler<
     HTMLButtonElement
@@ -47,12 +44,10 @@ const EditTaskBoardForm: React.FC<EditTaskBoardFormProps> = ({
 
   return (
     <form onSubmit={handleFormSubmit} className="flex flex-col w-full mb-3">
-      <input
-        type="text"
+      <TaskBoardInput
         value={updatedBoard}
-        onChange={handleInputChange}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setUpdatedBoard(e.target.value)}
         placeholder="Edit your task board"
-        className="border-2 border-secondary rounded-lg p-3 bg-white shadow-lg"
       />
       <div className="flex justify-between w-full">
         <button

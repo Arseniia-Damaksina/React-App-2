@@ -16,7 +16,7 @@ export class TaskListService {
 
   async getAllTasklists(): Promise<TaskListEntity[]> {
     try {
-      return await this.taskListRepository.find();
+      return await this.taskListRepository.find({ order: { id: 'ASC' }});
     } catch (error) {
       throw new Error('Failed to fetch all task lists');
     }

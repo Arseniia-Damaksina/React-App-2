@@ -3,6 +3,7 @@ import { useAppDispatch } from "../../store/store";
 import { createTaskBoardAsync } from "../../slices/taskBoardSlice";
 import { capitalizeString, showToastError } from "../../utils/utilFunctions";
 import { ToastContainer } from "react-toastify";
+import TaskBoardInput from "./inputs/TaskBoardInput";
 
 interface AddTaskBoardFormProps {
   setTaskBoardForm: React.Dispatch<React.SetStateAction<boolean>>;
@@ -33,13 +34,7 @@ const AddTaskBoardForm: React.FC<AddTaskBoardFormProps> = ({ setTaskBoardForm })
 
   return (
     <form onSubmit={handleFormSubmit} className="flex flex-col w-full mb-3">
-      <input
-        type="text"
-        value={newTaskBoard}
-        onChange={handleInputChange}
-        placeholder="Add your task board"
-        className="border-2 border-secondary rounded-lg p-3 bg-white shadow-lg"
-      />
+      <TaskBoardInput value={newTaskBoard} onChange={handleInputChange} placeholder="Add your task board" />
       <div className="flex justify-between w-full">
         <button type="submit" className="w-1/2 p-3 mt-2 rounded-lg bg-tertiary text-white">
           Create

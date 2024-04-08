@@ -27,7 +27,7 @@ export class TaskService {
 
   async getAllTasks(): Promise<TaskEntity[]> {
     try {
-      const tasks = await this.taskRepository.find();
+      const tasks = await this.taskRepository.find({ order: { id: 'ASC' }});
       return tasks;
     } catch (error) {
       throw new Error('Failed to fetch all tasks');
